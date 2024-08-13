@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import Head from "next/head";
 import { experimentalStyled as styled } from '@mui/material/styles';
 import { Grid, Paper, Box, Button, Container, AppBar, Toolbar, Typography } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark',
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200],
   ...theme.typography.body2,
   padding: theme.spacing(2),
   textAlign: 'center',
@@ -16,12 +16,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Home() {
+  const { isSignedIn } = useUser();
+  
   const handleSubmit = async ()=>{
     const checkoutSession = await fetch('/api/checkout_sessions', {
       method: 'POST',
       headers: {
-        origin: 'https://localhost:3000',
-      }
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ origin: 'https://localhost:3000' }),
     })
 
     if (!checkoutSession.ok) {
@@ -31,8 +34,8 @@ export default function Home() {
     const checkoutSessionJson = await checkoutSession.json()
 
     if (checkoutSession.statusCode === 500) {
-      console.error(checkoutSession.message)
-      return
+      console.error(checkoutSessionJson.message)
+      return;
     }
 
     const stripe = await getStripe()
@@ -58,6 +61,9 @@ export default function Home() {
           <Typography variant = "h6" style={{flexGrow:1}}>
             Flashcard SaaS
           </Typography>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
           <SignedOut>
             <Button color="inherit" href="/sign-in"> Login </Button>
             <Button color="inherit" href="/sign-up"> Register </Button>
@@ -74,7 +80,7 @@ export default function Home() {
         <Typography variant="h5">
           Build your flashcards today!
         </Typography>
-        <Button variant="contained" color="primary" sx={{at: 2}}>
+        <Button variant="contained" color="primary" sx={{mt: 2}} href={isSignedIn ? "/generate": "/sign-up"}>
           Get Started
         </Button>
       </Box>

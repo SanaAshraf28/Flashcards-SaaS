@@ -3,9 +3,37 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import getStripe from "@/utils/get-stripe"
 import { useSearchParams } from "next/navigation"
-import { CircularProgress, Container, Typography } from "@mui/material"
+import { CircularProgress, Container, Typography, Box, Button } from "@mui/material"
 
 const ResultPage = () => {
+    const handleSubmit = async ()=>{
+        const checkoutSession = await fetch('/api/checkout_sessions', {
+          method: 'POST',
+          headers: {
+            origin: 'https://localhost:3000',
+          }
+        })
+    
+        if (!checkoutSession.ok) {
+          throw new Error(`HTTP error! status: ${checkoutSession.status}`);
+        }
+    
+        const checkoutSessionJson = await checkoutSession.json()
+    
+        if (checkoutSession.statusCode === 500) {
+          console.error(checkoutSession.message)
+          return
+        }
+    
+        const stripe = await getStripe()
+        const {error} = await stripe.redirectToCheckout({
+          sessionId: checkoutSessionJson.id,
+        })
+    
+        if (error) {
+          console.warn(error.message)
+        }
+      }
     const router = useRouter()
     const searchParams = useSearchParams()
     const session_id = searchParams.get('session_id')
@@ -16,9 +44,13 @@ const ResultPage = () => {
 
     useEffect(() => {
         const fetchCheckoutSession = async () => {
-            if (!session_id) return
+            if (!session_id) {
+                setError("No session ID provided");
+                setLoading(false);
+                return;
+            }
             try {
-                const res = await fetch(`api/checkout_sessions?session_id = ${session_id}`)
+                const res = await fetch(`api/checkout_sessions?session_id=${session_id}`)
                 const sessionData = await res.json()
                 if (res.ok) {
                     setSession(sessionData)
@@ -49,7 +81,7 @@ const ResultPage = () => {
             <Container maxWidth = "100vw" sx={{
                 textAlign: 'center', mt:4,
             }}>
-                <Typography variant="h6"> (error)</Typography>
+                <Typography variant="h6"> {error} </Typography>
             </Container>
         )
     }
@@ -73,12 +105,15 @@ const ResultPage = () => {
                 <>
                     <Typography variant="h4"> Payment Failed</Typography>
                     <Box sx = {{mt:22}}>
-                        <Typography variant = "h6">
+                        {/* <Typography variant = "h6">
                             Session ID: {session_id}
-                        </Typography>
+                        </Typography> */}
                         <Typography variant="body1">
                             Oops... Looks like your payment did not go through! Please try again!
                         </Typography>
+                        <Button variant="contained" color="primary" sx={{at: 2}} onClick={handleSubmit}>
+                            Try Again
+                        </Button>
                     </Box>
                 </>
             )}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useUser } from '@clerk/nextjs'
-import { Button, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid } from '@mui/material'
+import { Button, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid } from '@mui/material'
 import { collection, writeBatch, doc, getDoc, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -9,7 +9,7 @@ import { db } from '@/firebase'
 
 
 export default function Generate() {
-    const {isLoaded, isSignedin, user} = useUser()
+    const {isLoaded, isSignedIn, user} = useUser()
     const [flashcards, setFlashcards] = useState([])
     const [flipped, setFlipped] = useState([])
     const [text, setText] = useState('')
@@ -18,9 +18,12 @@ export default function Generate() {
     const router = useRouter()
 
     const handleSubmit = async ()=> {
-        fetch('api/generate', {
-            method:'POST',
-            body: text,
+        fetch("/api/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text }),
         })
         .then((res) => res.json())
         .then((data) => setFlashcards(data))
@@ -72,9 +75,9 @@ export default function Generate() {
         router.push('/flashcards')
     }
 
-    if (!isLoaded || !isSignedin || !user) {
-        return <div>Loading...</div>
-    }
+    // if (!isLoaded || !isSignedin || !user) {
+    //     return <div>Loading...</div>
+    // }
 
     return <Container maxWidth="md">
         <Box
