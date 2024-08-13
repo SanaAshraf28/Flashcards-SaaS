@@ -1,11 +1,10 @@
-'use client'
+"use client"
 
-import {useUser} from '@clerk/nextjs'
-import { Button, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box } from '@mui/material'
+import { useUser } from '@clerk/nextjs'
+import { Button, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid } from '@mui/material'
 import { collection, writeBatch, doc, getDoc, setDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { transform } from 'next/dist/build/swc'
 import { db } from '@/firebase'
 
 
@@ -24,7 +23,7 @@ export default function Generate() {
             body: text,
         })
         .then((res) => res.json())
-        .then((data) > setFlashcards(data))
+        .then((data) => setFlashcards(data))
         }
     
     const handleCardClick = (id) => {
@@ -65,12 +64,16 @@ export default function Generate() {
         }
         const colRef = collection(userDocRef, name)
         flashcards.forEach((flashcard) => {
-            const cardDocRef = doc(colRef)
-            batch.set(cardDocRef, flashcard)
+            const cardDocRef = doc(colRef);
+            batch.set(cardDocRef, flashcard);
         })
         await batch.commit()
         handleClose()
         router.push('/flashcards')
+    }
+
+    if (!isLoaded || !isSignedin || !user) {
+        return <div>Loading...</div>
     }
 
     return <Container maxWidth="md">
@@ -144,11 +147,11 @@ export default function Generate() {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 padding: 2,
-                                                boxSixing: 'border-box',
+                                                boxSizing: 'border-box',
 
                                             },
                                             '& > div > div:nth-of-type(2)': {
-                                               tranform: 'rotateY(180deg)',
+                                               transform: 'rotateY(180deg)',
                                             },
                                         }}>
                                             <div>

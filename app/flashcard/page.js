@@ -4,18 +4,19 @@ import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "@/firebase"
-import { Button, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box } from '@mui/material'
+import { Button, Grid, CardActionArea, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box } from '@mui/material'
 
 import { useSearchParams } from "next/navigation"
-import { Container } from "@mui/material"
 
 export default function Flashcard(){
-    const {isLoaded, isSignedin, user} = useUser()
+    const {isLoaded, isSignedIn, user} = useUser()
     const [flashcards, setFlashcards] = useState([])
     const [flipped, setFlipped] = useState([])
 
     const searchParams = useSearchParams()
     const search = searchParams.get('id')
+
+    console.log("hi1")
 
     useEffect(() => {
         async function getFlashcard() {
@@ -28,6 +29,7 @@ export default function Flashcard(){
                 flashcards.push({id: doc.id, ...doc.data()})
             ))
             setFlashcards(flashcards)
+            console.log("hi2")
         }
         getFlashcard()
     }, [user, search])
@@ -53,7 +55,8 @@ export default function Flashcard(){
                                 onClick={() => {
                                     handleCardClick(index)
                                 }}
-                            >
+                            >   
+                                console.log("hi3")
                                 <CardContent>
                                     <Box sx={{
                                         perspective: '1000px',

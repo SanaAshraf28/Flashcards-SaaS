@@ -20,9 +20,13 @@ export default function Home() {
     const checkoutSession = await fetch('/api/checkout_sessions', {
       method: 'POST',
       headers: {
-        origin: 'https://localhsot:3000',
+        origin: 'https://localhost:3000',
       }
     })
+
+    if (!checkoutSession.ok) {
+      throw new Error(`HTTP error! status: ${checkoutSession.status}`);
+    }
 
     const checkoutSessionJson = await checkoutSession.json()
 
@@ -31,7 +35,7 @@ export default function Home() {
       return
     }
 
-    const stripe = await getStripe
+    const stripe = await getStripe()
     const {error} = await stripe.redirectToCheckout({
       sessionId: checkoutSessionJson.id,
     })
@@ -41,7 +45,7 @@ export default function Home() {
     }
   }
   return (
-    <Container maxWidth='lg'>
+    <Container maxWidth='200vh'>
       <Head>
         <title>
           Flashcard Saas
@@ -49,7 +53,7 @@ export default function Home() {
         <meta name="description" content = "Create flashcard from your text" />
       </Head>
 
-      <AppBar position="static">
+      <AppBar position="static" maxWidth="100%">
         <Toolbar>
           <Typography variant = "h6" style={{flexGrow:1}}>
             Flashcard SaaS
