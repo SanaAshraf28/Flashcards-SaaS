@@ -41,7 +41,7 @@ export default function Flashcards(){
             {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm = {6} md = {4} key = {index}>
                 <Card>
-                    <CardActionArea onClick={()=>(handleCardClick(flashcard.id))}>
+                    <CardActionArea onClick={()=>(handleCardClick(flashcard.name))}>
                         <CardContent>
                             <Typography variant="h6">{flashcard.name}</Typography>
                         </CardContent>
