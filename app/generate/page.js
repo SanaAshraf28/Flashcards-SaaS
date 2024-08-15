@@ -103,9 +103,6 @@ export default function Generate() {
             alert('Please enter a name');
             return;
         }
-
-        // Your save flashcards logic here...
-
         handleClose();
         router.push('/flashcards');
     };
@@ -123,48 +120,47 @@ export default function Generate() {
             >
                 <Typography variant='h4'>Generate Flashcards</Typography>
                 <Paper sx={{ p: 4, width: '100%' }}>
-    <Typography variant='h6' gutterBottom>
-        Upload PDF or Enter Text
-    </Typography>
-    
-    {/* Text Input Section */}
-    <TextField 
-        value={text} 
-        onChange={handleTextChange} 
-        label="Enter Text"
-        fullWidth
-        multiline
-        rows={4}
-        variant='outlined'
-        helperText="Type or paste text here to generate flashcards."
-        sx={{ mb: 2 }}
-         // Disable if a file is uploaded
-    />
-    
-    <Typography variant='body1' align="center" sx={{ my: 2 }}>
-        OR
-    </Typography>
+                <Typography variant='h6' gutterBottom>
+                    Upload PDF or Enter Text
+                </Typography>
+                
+                {/* Text Input Section */}
+                <TextField 
+                    value={text} 
+                    onChange={handleTextChange} 
+                    label="Enter Text"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    variant='outlined'
+                    helperText="Type or paste text here to generate flashcards."
+                    sx={{ mb: 2 }}
+                   
+                />
+                
+                <Typography variant='body1' align="center" sx={{ my: 2 }}>
+                    OR
+                </Typography>
 
-    {/* File Upload Section */}
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-        <Button
-            variant="contained"
-            component="label"
-            color="secondary"
-             // Disable if text is entered
-        >
-            Upload PDF
-            <input
-                type="file"
-                accept="application/pdf"
-                onChange={handleFileChange}
-                hidden
-            />
-        </Button>
-        <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
-            Upload a PDF to extract text for flashcard generation.
-        </Typography>
-    </Box>
+                {/* File Upload Section */}
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        color="secondary"
+                    >
+                        Upload PDF
+                        <input
+                            type="file"
+                            accept="application/pdf"
+                            onChange={handleFileChange}
+                            hidden
+                        />
+                    </Button>
+                    <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
+                        Upload a PDF to extract text for flashcard generation.
+                    </Typography>
+                </Box>
     
     {/* Submit Button */}
     <Button
@@ -172,7 +168,6 @@ export default function Generate() {
         color="primary"
         onClick={handleSubmit}
         fullWidth
-         // Disables button if both fields are empty
     >
         Submit
     </Button>
