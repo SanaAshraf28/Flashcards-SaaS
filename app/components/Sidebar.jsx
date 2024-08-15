@@ -36,14 +36,14 @@ const Sidebar = () => {
         color: "white",
       }}>
         <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          Flashcard SaaS
+          Notefy
         </Link>
       </Typography>
       <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
         <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative" }}>
           <List>
             <ListItem>
-              <Typography variant="h6">Flashcard SaaS</Typography>
+              <Typography variant="h6">Notefy</Typography>
             </ListItem>
             <SignedIn>
               <ListItem button onClick={toggleDrawer}>
