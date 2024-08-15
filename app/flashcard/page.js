@@ -4,8 +4,9 @@ import { useUser } from "@clerk/nextjs"
 import { useEffect, useState } from "react"
 import { collection, doc, getDoc, getDocs } from "firebase/firestore"
 import { db } from "@/firebase"
-import { Button, Grid, Card, CardActionArea, CardContent, Container, Typography, Box } from '@mui/material'
+import { AppBar, Link, Toolbar, IconButton, Button, Grid, Card, CardActionArea, CardContent, Container, Typography, Box } from '@mui/material'
 import { useSearchParams } from "next/navigation"
+import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded"
 
 export default function Flashcard() {
     const {isLoaded, isSignedIn, user} = useUser()
@@ -45,6 +46,30 @@ export default function Flashcard() {
 
     return (
         <Container maxWidth = "100vw">
+            <AppBar position="static" sx={{backgroundColor: '#3f51b5'}} maxWidth='100%'>
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="home"
+                        href="/flashcards"
+                        >
+                        <ArrowBackIosNewRoundedIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        sx={{flexGrow:1,
+                        }}
+                    >
+                        Flashcard SaaS
+                    </Typography>
+                    <Button color="inherit">
+                        <Link href="/flashcards">
+                        View Saved Flashcards
+                        </Link>
+                    </Button>
+                </Toolbar>
+            </AppBar>
             <Grid container spacing = {3} sx={{mt:4}}>
                 {flashcards.map((flashcard, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>

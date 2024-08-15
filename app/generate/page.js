@@ -1,8 +1,9 @@
 "use client"
 
 import { useUser } from '@clerk/nextjs'
-import { Button, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid } from '@mui/material'
+import { AppBar, Toolbar, Link, Button, IconButton, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid } from '@mui/material'
 import { collection, writeBatch, doc, getDoc, setDoc } from 'firebase/firestore'
+import HomeIcon from '@mui/icons-material/Home'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { db } from '@/firebase'
@@ -15,6 +16,7 @@ export default function Generate() {
     const [text, setText] = useState('')
     const [name, setName] = useState('')
     const [open, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const router = useRouter()
 
     const handleSubmit = async ()=> {
@@ -27,8 +29,8 @@ export default function Generate() {
         })
         .then((res) => res.json())
         .then((data) => setFlashcards(data))
-        }
-    
+    }
+
     const handleCardClick = (id) => {
         setFlipped((prev) => ({
             ...prev,
@@ -74,12 +76,35 @@ export default function Generate() {
         handleClose()
         router.push('/flashcards')
     }
+    const handleHomeClick = () => {
+        router.push('/')
+    }
 
-    // if (!isLoaded || !isSignedin || !user) {
-    //     return <div>Loading...</div>
-    // }
-
-    return <Container maxWidth="md">
+    return <Container maxWidth="100%" >
+        <AppBar position="static" sx={{backgroundColor: '#3f51b5'}} maxWidth='100%'>
+            <Toolbar>
+                <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="home"
+                    onClick={handleHomeClick}
+                    >
+                    <HomeIcon />
+                </IconButton>
+                <Typography
+                    variant="h6"
+                    sx={{flexGrow:1,
+                    }}
+                >
+                    Flashcard SaaS
+                </Typography>
+                <Button color="inherit">
+                    <Link href="/flashcards">
+                    View Saved Flashcards
+                    </Link>
+                </Button>
+            </Toolbar>
+        </AppBar>
         <Box
           sx={{
             mt:4,
@@ -92,7 +117,7 @@ export default function Generate() {
             <Typography variant='h4'>
                 Generate Flashcards
             </Typography>
-            <Paper sx={{p:4, width: '100%'}}>
+            <Paper sx={{p:4, mb: 4, width: '100%'}}>
                 <TextField value={text} onChange={(e) => setText(e.target.value)} 
                 label="Enter Text"
                 fullWidth
@@ -112,12 +137,35 @@ export default function Generate() {
                     {' '}
                     Submit
                 </Button>
+                <TextField
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    label="YouTube Video URL"
+                    fullWidth
+                    variant='outlined'
+                    sx={{ mb: 2, mt: 2 }}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    fullWidth
+                >
+                    {' '}
+                    Submit
+                </Button>
             </Paper>
         </Box>
 
+        {loading && (
+            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+                <Typography variant="h6">Flashcards being generated...</Typography>
+            </Box>
+        )}
+
         {flashcards.length > 0 && (
-            <Box sx={{mt: 4}}>
-                <Typography variant='h5'>Flashcards Preview</Typography>
+            <Box sx={{mt: 4, mb: 4}} >
+                {/* <Typography variant='h5'>Flashcards Preview</Typography> */}
                 <Grid container spacing={3}>
                     {flashcards.map((flashcard, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
