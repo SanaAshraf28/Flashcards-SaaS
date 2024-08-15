@@ -16,7 +16,6 @@ Follow these guidelines to create the flashcards.
 9. If given a body of text, extract the most improtant and relevant information for the flashcards.
 10. Aim to create a balanced set of flashcards that covers the topic comprehensively.
 11. Only generate 10 flashcards
-12. Try to provide one word answers wherever possible
 
 
 Remember, the goal is to facilitate effective learning and retention of information through these flashcards.

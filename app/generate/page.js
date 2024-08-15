@@ -138,8 +138,8 @@ export default function Generate() {
                     Submit
                 </Button>
                 <TextField
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
+                    // value={videoUrl}
+                    // onChange={(e) => setVideoUrl(e.target.value)}
                     label="YouTube Video URL"
                     fullWidth
                     variant='outlined'
@@ -158,7 +158,7 @@ export default function Generate() {
         </Box>
 
         {loading && (
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
                 <Typography variant="h6">Flashcards being generated...</Typography>
             </Box>
         )}
