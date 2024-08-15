@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Button, Container, TextField, Typography, Box, Paper, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Button, Container, TextField, Typography, Box, Paper, Grid, Card, CardActionArea, CardContent, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, CircularProgress } from '@mui/material';
 import { useRouter } from 'next/navigation'; // Correct import
 
 import * as pdfjsLib from 'pdfjs-dist/webpack'; // Correct import
@@ -13,18 +13,25 @@ export default function Generate() {
     const [name, setName] = useState('');
     const [open, setOpen] = useState(false);
     const [flipped, setFlipped] = useState([]);
+    const [loading, setLoading] = useState(false);
     const router = useRouter(); // Correct usage
 
     useEffect(() => {
         // Set up PDF.js worker
         if (typeof window !== 'undefined') {
-            console.log(window)
             pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
         }
     }, []);
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
+        setText(''); 
+        
+    };
+
+    const handleTextChange = (e) => {
+        setText(e.target.value);
+        setFile(null); 
     };
 
     const extractTextFromPDF = async (file) => {
@@ -52,6 +59,7 @@ export default function Generate() {
     };
 
     const handleSubmit = async () => {
+        setLoading(true);
         let extractedText = text;
         if (file) {
             extractedText = await extractTextFromPDF(file);
@@ -65,8 +73,14 @@ export default function Generate() {
             body: JSON.stringify({ text: extractedText }),
         })
         .then((res) => res.json())
-        .then((data) => setFlashcards(data))
-        .catch((error) => console.error('Error fetching flashcards:', error));
+        .then((data) => {
+            setFlashcards(data);
+            setLoading(false);
+        })
+        .catch((error) => {
+            console.error('Error fetching flashcards:', error);
+            setLoading(false);
+        });
     };
 
     const handleCardClick = (id) => {
@@ -109,29 +123,68 @@ export default function Generate() {
             >
                 <Typography variant='h4'>Generate Flashcards</Typography>
                 <Paper sx={{ p: 4, width: '100%' }}>
-                    <TextField 
-                        value={text} 
-                        onChange={(e) => setText(e.target.value)} 
-                        label="Enter Text"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        variant='outlined'
-                        sx={{ mb: 2 }}
-                    />
-                    <Box marginBottom={'15px'}>
-                    <input type="file" accept="application/pdf" onChange={handleFileChange} />
-                    </Box>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSubmit}
-                        fullWidth
-                    >
-                        Submit
-                    </Button>
-                </Paper>
+    <Typography variant='h6' gutterBottom>
+        Upload PDF or Enter Text
+    </Typography>
+    
+    {/* Text Input Section */}
+    <TextField 
+        value={text} 
+        onChange={handleTextChange} 
+        label="Enter Text"
+        fullWidth
+        multiline
+        rows={4}
+        variant='outlined'
+        helperText="Type or paste text here to generate flashcards."
+        sx={{ mb: 2 }}
+         // Disable if a file is uploaded
+    />
+    
+    <Typography variant='body1' align="center" sx={{ my: 2 }}>
+        OR
+    </Typography>
+
+    {/* File Upload Section */}
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+        <Button
+            variant="contained"
+            component="label"
+            color="secondary"
+             // Disable if text is entered
+        >
+            Upload PDF
+            <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleFileChange}
+                hidden
+            />
+        </Button>
+        <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
+            Upload a PDF to extract text for flashcard generation.
+        </Typography>
+    </Box>
+    
+    {/* Submit Button */}
+    <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        fullWidth
+         // Disables button if both fields are empty
+    >
+        Submit
+    </Button>
+</Paper>
+
             </Box>
+
+            {loading && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+                    <CircularProgress /> 
+                </Box>
+            )}
 
             {flashcards.length > 0 && (
                 <Box sx={{ mt: 4 }}>
