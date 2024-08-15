@@ -23,7 +23,7 @@ const Sidebar = () => {
           color: "white",
           
           '&:hover': {
-            backgroundColor: "#3b5998",
+            backgroundColor: "#a2b3cd",
           },
         }}
       >
@@ -40,7 +40,7 @@ const Sidebar = () => {
         </Link>
       </Typography>
       <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250, bgcolor: "#1e3a8a", color: "white", height: "100%", position: "relative" }}>
+        <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative" }}>
           <List>
             <ListItem>
               <Typography variant="h6">Flashcard SaaS</Typography>
