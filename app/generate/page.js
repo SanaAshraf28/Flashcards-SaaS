@@ -65,6 +65,8 @@ export default function Generate() {
 
     const handleSubmit = async () => {
         setLoading(true);
+        setText('');
+        setFlashcards([]);
         let extractedText = text;
         if (file) {
             extractedText = await extractTextFromPDF(file);

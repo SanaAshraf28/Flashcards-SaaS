@@ -111,8 +111,8 @@ export default function Home() {
 
       <Container maxWidth="lg" sx={{ position: "relative", zIndex: 10, pt: 10 }}>
         <Box sx={{ textAlign: "center", my: 4 }}>
-          <Typography variant="h3" className="cycle-colors">
-            Welcome to Notefy
+          <Typography variant="h2" className="cycle-colors">
+            Welcome to <Box component="span" sx={{ fontWeight: 600}}>Notefy</Box>
           </Typography>
           <Typography variant="h5" sx={{ color: "gray" }}>
             Build your flashcards today!
