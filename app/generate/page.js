@@ -212,17 +212,14 @@ export default function Generate() {
                             color="primary"
                             onClick={handleSubmit}
                             fullWidth
+                            disabled={loading}
                         >
-                            Submit
+                            {loading ? <CircularProgress size={24} /> : 'Submit'}
                         </Button>
                     </Paper>
                 </Box>
 
-                {loading && (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-                        <CircularProgress /> 
-                    </Box>
-                )}
+
 
                 {flashcards.length > 0 && (
                     <Box sx={{ mt: 4 }}>
