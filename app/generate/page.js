@@ -1,21 +1,19 @@
-'use client';
+'use client'
 import { useUser, UserButton } from '@clerk/nextjs';
-import { Button, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material';
+import { CardActionArea, Card, TextField, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Box, Button, Grid} from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
-import Sidebar from '../components/Sidebar';  // Import the Sidebar component
+import Sidebar from '../components/Sidebar';
+import DataInput from '../components/DataInput';  // Import the DataInput component
 
 export default function Generate() {
     const { isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
-    const [file, setFile] = useState(null);
-    const [text, setText] = useState('');
-    const [youtubeLink, setYoutubeLink] = useState('');
-    const [name, setName] = useState('');
-    const [open, setOpen] = useState(false);
     const [flipped, setFlipped] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState('');
     const router = useRouter();
 
     useEffect(() => {
@@ -24,22 +22,40 @@ export default function Generate() {
         }
     }, []);
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-        setText('');
-        setYoutubeLink('');
-    };
+    const handleSubmit = async ({ activeTab, file, text, youtubeLink }) => {
+        setLoading(true);
+        setFlashcards([]);
+        let extractedText = text;
 
-    const handleTextChange = (e) => {
-        setText(e.target.value);
-        setFile(null);
-        setYoutubeLink('');
-    };
+        if (activeTab === 'pdf' && file) {
+            extractedText = await extractTextFromPDF(file);
+        }
 
-    const handleYoutubeLinkChange = (e) => {
-        setYoutubeLink(e.target.value);
-        setText('');
-        setFile(null);
+        let url = '/api/generate';
+        let body = { text: extractedText };
+
+        if (activeTab === 'youtube' && youtubeLink) {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+            url = 'http://localhost:5000/api/generate-flashcards';
+            body = { youtube_url: youtubeLink };
+        }
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setFlashcards(activeTab === 'youtube' ? data.flashcards || [] : data);
+            setLoading(false);
+        })
+        .catch((error) => {
+            console.error('Error fetching flashcards:', error);
+            setLoading(false);
+        });
     };
 
     const extractTextFromPDF = async (file) => {
@@ -63,47 +79,6 @@ export default function Generate() {
             };
             fileReader.onerror = (error) => reject(error);
             fileReader.readAsArrayBuffer(file);
-        });
-    };
-
-    const handleSubmit = async () => {
-        setLoading(true);
-        setText('');
-        setFlashcards([]);
-        let extractedText = text;
-
-        if (file) {
-            extractedText = await extractTextFromPDF(file);
-        }
-
-        let url = '/api/generate';
-        let body = { text: extractedText };
-        console.log(youtubeLink===true);
-        if (youtubeLink) {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-            //url = `${apiUrl}/api/generate-flashcards`;
-            url = 'http://localhost:5000/api/generate-flashcards';
-            body = { youtube_url: youtubeLink };
-        }
-        console.log(body);
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(body),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            if(youtubeLink){
-                setFlashcards(data.flashcards || []);
-            }else{setFlashcards(data);}
-            
-            setLoading(false);
-        })
-        .catch((error) => {
-            console.error('Error fetching flashcards:', error);
-            setLoading(false);
         });
     };
 
@@ -152,74 +127,10 @@ export default function Generate() {
                     }}
                 >
                     <Typography variant='h4' sx={{ pb: 2, fontWeight: 500 }} className="cycle-colors">Generate Flashcards</Typography>
-                    <Paper sx={{ p: 4, width: '100%', zIndex: 1, backgroundColor: 'white' }}>
-                        <Typography variant='h6' gutterBottom>
-                            Upload PDF, Enter Text, or Input YouTube Link
-                        </Typography>
-
-                        <TextField 
-                            value={text} 
-                            onChange={handleTextChange} 
-                            label="Enter Text"
-                            fullWidth
-                            multiline
-                            rows={4}
-                            variant='outlined'
-                            helperText="Type or paste text here to generate flashcards."
-                            sx={{ mb: 2 }}
-                        />
-                        
-                        <Typography variant='body1' align="center" sx={{ my: 2 }}>
-                            OR
-                        </Typography>
-
-                        <TextField 
-                            value={youtubeLink} 
-                            onChange={handleYoutubeLinkChange} 
-                            label="Enter YouTube Link"
-                            fullWidth
-                            variant='outlined'
-                            helperText="Enter a YouTube link to generate flashcards."
-                            sx={{ mb: 2 }}
-                        />
-
-                        <Typography variant='body1' align="center" sx={{ my: 2 }}>
-                            OR
-                        </Typography>
-
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
-                            <Button
-                                variant="contained"
-                                component="label"
-                                color="secondary"
-                            >
-                                Upload PDF
-                                <input
-                                    type="file"
-                                    accept="application/pdf"
-                                    onChange={handleFileChange}
-                                    hidden
-                                />
-                            </Button>
-                            <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
-                                Upload a PDF to extract text for flashcard generation.
-                            </Typography>
-                        </Box>
-
-                        {/* Submit Button */}
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSubmit}
-                            fullWidth
-                            disabled={loading}
-                        >
-                            {loading ? <CircularProgress size={24} /> : 'Submit'}
-                        </Button>
-                    </Paper>
+                    
+                    {/* Data Input Area */}
+                    <DataInput onSubmit={handleSubmit} />
                 </Box>
-
-
 
                 {flashcards.length > 0 && (
                     <Box sx={{ mt: 4 }}>
@@ -229,9 +140,7 @@ export default function Generate() {
                                 <Grid item xs={12} sm={6} md={4} key={index}>
                                     <Card>
                                         <CardActionArea
-                                            onClick={() => {
-                                                handleCardClick(index);
-                                            }}
+                                            onClick={() => handleCardClick(index)}
                                         >
                                             <CardContent>
                                                 <Box sx={{
