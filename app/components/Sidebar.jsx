@@ -15,7 +15,7 @@ const Sidebar = () => {
       <IconButton
         onClick={toggleDrawer}
         sx={{
-          position: isOpen ? "absolute" : "fixed",
+          position: "fixed",
           top: 12,
           left: isOpen ? 200 : 16,
           transition: "left 0.3s ease",
@@ -29,16 +29,22 @@ const Sidebar = () => {
       >
         <FaBars />
       </IconButton>
-      <Typography variant="h5" sx={{ 
-        position: "fixed", 
-        top: 16,
-        left: 72, 
-        color: "white",
-      }}>
-        <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          Notefy
-        </Link>
-      </Typography>
+
+      {/* Conditionally render the Notefy text based on sidebar state */}
+      {!isOpen && (
+        <Typography variant="h5" sx={{ 
+          position: "fixed", 
+          top: 16,
+          left: 72, 
+          color: "white",
+          zIndex: 1200,  // Adjusting zIndex to be behind the sidebar
+        }}>
+          <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Notefy
+          </Link>
+        </Typography>
+      )}
+
       <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
         <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative" }}>
           <List>
