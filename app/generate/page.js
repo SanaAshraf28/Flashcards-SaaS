@@ -1,6 +1,6 @@
 'use client';
 import { useUser, UserButton } from '@clerk/nextjs';
-import { AppBar, Toolbar, Link, Button, IconButton, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material';
+import { Button, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
@@ -78,14 +78,14 @@ export default function Generate() {
 
         let url = '/api/generate';
         let body = { text: extractedText };
-
+        console.log(youtubeLink===true);
         if (youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
             //url = `${apiUrl}/api/generate-flashcards`;
             url = 'http://localhost:5000/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
-
+        console.log(body);
         fetch(url, {
             method: "POST",
             headers: {
@@ -95,7 +95,10 @@ export default function Generate() {
         })
         .then((res) => res.json())
         .then((data) => {
-            setFlashcards(data.flashcards || []);
+            if(youtubeLink){
+                setFlashcards(data.flashcards || []);
+            }else{setFlashcards(data);}
+            
             setLoading(false);
         })
         .catch((error) => {
