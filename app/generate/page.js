@@ -83,7 +83,8 @@ export default function Generate() {
         let body = { text: extractedText };
 
         if (youtubeLink) {
-            url = 'http://localhost:5000/api/generate-flashcards'; // Change endpoint for YouTube processing
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+            url = `${apiUrl}/api/generate-flashcards`;
             body = { youtube_url: youtubeLink };
         }
 
