@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaBars } from "react-icons/fa";  // Importing the menu icon from react-icons
 import HomeIcon from '@mui/icons-material/Home';  // Importing the Home icon from MUI
 import { RiAiGenerate } from "react-icons/ri";  // Importing the Generate icon from react-icons/ri
+import { FaBookmark } from "react-icons/fa";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,8 +113,9 @@ const Sidebar = () => {
                 <ListItemText primary="Generate" sx={{ pb: .25, ml: 2 }}/>
               </ListItem>
 
-              <ListItem button onClick={toggleDrawer}>
-                <ListItemText primary="Dashboard" />
+              <ListItem button component = "a" href = "/flashcards" onClick={toggleDrawer} >
+              <Box sx={{ pl: .5, transform: "scale(1.2)"}}><FaBookmark /> </Box>
+                <ListItemText primary="Saved Collections" sx={{ pb: .25, ml: 2 }} />
               </ListItem>
             </SignedIn>
             
