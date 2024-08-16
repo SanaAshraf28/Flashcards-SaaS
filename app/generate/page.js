@@ -1,28 +1,27 @@
-"use client";
+'use client'
+import { useUser } from '@clerk/nextjs';
+import { AppBar, Toolbar, Link, Button, IconButton, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material';
+import { collection, writeBatch, doc, getDoc, setDoc } from 'firebase/firestore';
+import HomeIcon from '@mui/icons-material/Home';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { db } from '@/firebase';
 
-import { useUser } from '@clerk/nextjs'
-import { AppBar, Toolbar, Link, Button, IconButton, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material'
-import { collection, writeBatch, doc, getDoc, setDoc } from 'firebase/firestore'
-import HomeIcon from '@mui/icons-material/Home'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { db } from '@/firebase'
-
-import * as pdfjsLib from 'pdfjs-dist/webpack'; // Correct import
+import * as pdfjsLib from 'pdfjs-dist/webpack';
 
 export default function Generate() {
-    const {isLoaded, isSignedIn, user} = useUser()
+    const { isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
     const [file, setFile] = useState(null);
     const [text, setText] = useState('');
+    const [youtubeLink, setYoutubeLink] = useState(''); // New state for YouTube link
     const [name, setName] = useState('');
     const [open, setOpen] = useState(false);
     const [flipped, setFlipped] = useState([]);
     const [loading, setLoading] = useState(false);
-    const router = useRouter(); // Correct usage
+    const router = useRouter();
 
     useEffect(() => {
-        // Set up PDF.js worker
         if (typeof window !== 'undefined') {
             pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
         }
@@ -30,13 +29,20 @@ export default function Generate() {
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
-        setText(''); 
-        
+        setText('');
+        setYoutubeLink(''); // Clear YouTube link when file is selected
     };
 
     const handleTextChange = (e) => {
         setText(e.target.value);
-        setFile(null); 
+        setFile(null);
+        setYoutubeLink(''); // Clear YouTube link when text is input
+    };
+
+    const handleYoutubeLinkChange = (e) => {
+        setYoutubeLink(e.target.value);
+        setText('');
+        setFile(null); // Clear file and text when YouTube link is input
     };
 
     const extractTextFromPDF = async (file) => {
@@ -68,20 +74,29 @@ export default function Generate() {
         setText('');
         setFlashcards([]);
         let extractedText = text;
+
         if (file) {
             extractedText = await extractTextFromPDF(file);
         }
 
-        fetch("/api/generate", {
+        let url = '/api/generate';
+        let body = { text: extractedText };
+
+        if (youtubeLink) {
+            url = 'http://localhost:5000/api/generate-flashcards'; // Change endpoint for YouTube processing
+            body = { youtube_url: youtubeLink };
+        }
+
+        fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ text: extractedText }),
+            body: JSON.stringify(body),
         })
         .then((res) => res.json())
         .then((data) => {
-            setFlashcards(data);
+            setFlashcards(data.flashcards || []); // Expecting a "flashcards" array in the response
             setLoading(false);
         })
         .catch((error) => {
@@ -127,59 +142,72 @@ export default function Generate() {
             >
                 <Typography variant='h4'>Generate Flashcards</Typography>
                 <Paper sx={{ p: 4, width: '100%' }}>
-                <Typography variant='h6' gutterBottom>
-                    Upload PDF or Enter Text
-                </Typography>
-                
-                {/* Text Input Section */}
-                <TextField 
-                    value={text} 
-                    onChange={handleTextChange} 
-                    label="Enter Text"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    variant='outlined'
-                    helperText="Type or paste text here to generate flashcards."
-                    sx={{ mb: 2 }}
-                   
-                />
-                
-                <Typography variant='body1' align="center" sx={{ my: 2 }}>
-                    OR
-                </Typography>
+                    <Typography variant='h6' gutterBottom>
+                        Upload PDF, Enter Text, or Input YouTube Link
+                    </Typography>
 
-                {/* File Upload Section */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                    {/* Text Input Section */}
+                    <TextField 
+                        value={text} 
+                        onChange={handleTextChange} 
+                        label="Enter Text"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant='outlined'
+                        helperText="Type or paste text here to generate flashcards."
+                        sx={{ mb: 2 }}
+                    />
+                    
+                    <Typography variant='body1' align="center" sx={{ my: 2 }}>
+                        OR
+                    </Typography>
+
+                    {/* YouTube Link Input Section */}
+                    <TextField 
+                        value={youtubeLink} 
+                        onChange={handleYoutubeLinkChange} 
+                        label="Enter YouTube Link"
+                        fullWidth
+                        variant='outlined'
+                        helperText="Enter a YouTube link to generate flashcards."
+                        sx={{ mb: 2 }}
+                    />
+
+                    <Typography variant='body1' align="center" sx={{ my: 2 }}>
+                        OR
+                    </Typography>
+
+                    {/* File Upload Section */}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            color="secondary"
+                        >
+                            Upload PDF
+                            <input
+                                type="file"
+                                accept="application/pdf"
+                                onChange={handleFileChange}
+                                hidden
+                            />
+                        </Button>
+                        <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
+                            Upload a PDF to extract text for flashcard generation.
+                        </Typography>
+                    </Box>
+
+                    {/* Submit Button */}
                     <Button
                         variant="contained"
-                        component="label"
-                        color="secondary"
+                        color="primary"
+                        onClick={handleSubmit}
+                        fullWidth
                     >
-                        Upload PDF
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            onChange={handleFileChange}
-                            hidden
-                        />
+                        Submit
                     </Button>
-                    <Typography variant="caption" color="textSecondary" sx={{ mt: 1 }}>
-                        Upload a PDF to extract text for flashcard generation.
-                    </Typography>
-                </Box>
-    
-    {/* Submit Button */}
-    <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-    >
-        Submit
-    </Button>
-</Paper>
-
+                </Paper>
             </Box>
 
             {loading && (
