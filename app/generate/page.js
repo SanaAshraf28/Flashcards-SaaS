@@ -198,23 +198,65 @@ export default function Generate() {
                                     </Card>
                                 </Grid>
                 ))}
-            </Grid>
-                        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                            <Button variant='contained' color='secondary' onClick={handleOpen}>
-                                Save
+                        </Grid>
+                        <Box sx={{ mt: 6, display: 'flex', justifyContent: 'center' }}>
+                            <Button
+                                variant='contained'
+                                color='secondary'
+                                sx={{
+                                    padding: '10px 30px',
+                                    fontSize: '16px',
+                                    borderRadius: '50px',
+                                    background: 'linear-gradient(135deg, #43cea2 0%, #185a9d 100%)',
+                                    color: '#fff',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                                    '&:hover': {
+                                        background: 'linear-gradient(135deg, #185a9d 0%, #43cea2 100%)',
+                                    },
+                                }}
+                                onClick={handleOpen}
+                            >
+                                Save Flashcards
                             </Button>
                         </Box>
                     </Box>
                 )}
 
-                {/* Dialog for saving flashcards */}
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Save Flashcards</DialogTitle>
+                /* Dialog for saving flashcards */
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                        sx: {
+                            borderRadius: '20px',
+                            background: 'linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%)',
+                            boxShadow: '0 8px 16px rgba(0,0,0,0.3)',
+                        },
+                    }}
+                >
+                    <DialogTitle
+                        sx={{
+                            fontWeight: 'bold',
+                            color: '#333',
+                            textAlign: 'center',
+                            textTransform: 'uppercase',
+                            fontSize: '24px',
+                        }}
+                    >
+                        Save Flashcards
+                    </DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
+                        <DialogContentText
+                            sx={{
+                                textAlign: 'center',
+                                mb: 3,
+                                color: '#666',
+                                fontSize: '16px',
+                            }}
+                        >
                             Please enter a name for your flashcards collection
                         </DialogContentText>
-                        <TextField 
+                        <TextField
                             autoFocus
                             margin='dense'
                             label="Collection Name"
@@ -223,11 +265,44 @@ export default function Generate() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             variant="outlined"
+                            sx={{
+                                mb: 2,
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: '10px',
+                                    backgroundColor: '#f7f9fc',
+                                },
+                            }}
                         />
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={saveFlashcards}>Save</Button>
+                    <DialogActions sx={{ justifyContent: 'center' }}>
+                        <Button
+                            onClick={handleClose}
+                            sx={{
+                                color: '#fff',
+                                backgroundColor: '#999',
+                                borderRadius: '50px',
+                                padding: '8px 20px',
+                                '&:hover': {
+                                    backgroundColor: '#777',
+                                },
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={saveFlashcards}
+                            sx={{
+                                color: '#fff',
+                                backgroundColor: '#1976d2',
+                                borderRadius: '50px',
+                                padding: '8px 20px',
+                                '&:hover': {
+                                    backgroundColor: '#005bb5',
+                                },
+                            }}
+                        >
+                            Save
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </Container>
