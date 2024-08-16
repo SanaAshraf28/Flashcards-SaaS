@@ -1,5 +1,4 @@
 'use client';
-
 import { useUser, UserButton } from '@clerk/nextjs';
 import { AppBar, Toolbar, Link, Button, IconButton, CardActionArea, Card, CardContent, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Box, Paper, Grid, CircularProgress } from '@mui/material';
 import { useState, useEffect } from 'react';
@@ -82,6 +81,7 @@ export default function Generate() {
 
         if (youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+            //url = `${apiUrl}/api/generate-flashcards`;
             url = 'http://localhost:5000/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
@@ -130,8 +130,7 @@ export default function Generate() {
 
     return (
     <>
-        <Sidebar /> {/* Include the Sidebar component */}
-        
+        <Sidebar /> 
         <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
             <UserButton />
         </Box>
@@ -149,13 +148,12 @@ export default function Generate() {
                         position: 'relative',
                     }}
                 >
-                    <Typography variant='h4'>Generate Flashcards</Typography>
+                    <Typography variant='h4' sx={{ pb: 2, fontWeight: 500 }} className="cycle-colors">Generate Flashcards</Typography>
                     <Paper sx={{ p: 4, width: '100%', zIndex: 1, backgroundColor: 'white' }}>
                         <Typography variant='h6' gutterBottom>
                             Upload PDF, Enter Text, or Input YouTube Link
                         </Typography>
 
-                        {/* Text Input Section */}
                         <TextField 
                             value={text} 
                             onChange={handleTextChange} 
@@ -172,7 +170,6 @@ export default function Generate() {
                             OR
                         </Typography>
 
-                        {/* YouTube Link Input Section */}
                         <TextField 
                             value={youtubeLink} 
                             onChange={handleYoutubeLinkChange} 
@@ -187,7 +184,6 @@ export default function Generate() {
                             OR
                         </Typography>
 
-                        {/* File Upload Section */}
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
                             <Button
                                 variant="contained"
