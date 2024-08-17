@@ -1,7 +1,10 @@
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { Drawer, List, ListItem, ListItemText, Typography, IconButton, Box, Link } from "@mui/material";
+import { Drawer, List, ListItem, ListItemText, ListItemButton, Typography, IconButton, Box } from "@mui/material";
+// import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";  // Importing the icon from react-icons
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +12,8 @@ const Sidebar = () => {
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -21,7 +26,6 @@ const Sidebar = () => {
           transition: "left 0.3s ease",
           zIndex: 1300,
           color: "white",
-          
           '&:hover': {
             backgroundColor: "#a2b3cd",
           },
@@ -40,18 +44,18 @@ const Sidebar = () => {
         </Link>
       </Typography>
       <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative" }}>
+        <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative", marginTop:3 }}>
           <List>
             <ListItem>
               <Typography variant="h6">Notefy</Typography>
             </ListItem>
             <SignedIn>
-              <ListItem button onClick={toggleDrawer}>
+              <ListItemButton onClick={() => {toggleDrawer(); router.push('/generate'); }}>
                 <ListItemText primary="Generate" />
-              </ListItem>
-              <ListItem button onClick={toggleDrawer}>
+              </ListItemButton>
+              <ListItemButton onClick={() => {toggleDrawer(); router.push('/generate'); }}>
                 <ListItemText primary="Dashboard" />
-              </ListItem>
+              </ListItemButton>
             </SignedIn>
             <SignedOut>
               <ListItem button component="a" href="/sign-in" onClick={toggleDrawer}>

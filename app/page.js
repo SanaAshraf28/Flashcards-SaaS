@@ -1,10 +1,16 @@
 'use client'
 import { styled } from "@mui/material/styles";
 import Sidebar from "./components/Sidebar";
-import { Grid, Paper, Box, Button, Container, Typography, Link } from "@mui/material";
+import { Grid, Paper, Box, Button, Container, Typography, Link, TextField } from "@mui/material";
 import { useUser, UserButton } from "@clerk/nextjs";
 import getStripe from "@/utils/get-stripe";
 import { motion } from "framer-motion";
+import Slider from "react-slick";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import React, { useRef, useEffect } from "react";
+import { useForm, ValidationError } from '@formspree/react';
+import { useRouter } from "next/navigation";
 
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -69,8 +75,43 @@ const imageVariantsRight = {
   },
 };
 
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 5000,
+  beforeChange: (current, next) => {
+    const videos = document.querySelectorAll('.video-slide video');
+    videos[current].play();
+    videos[next].currentTime = 0;
+  },
+  afterChange: (current) => {
+    const videos = document.querySelectorAll('.video-slide video');
+    videos[current].play(); // Play the video on the current slide
+  },
+};
+
 export default function Home() {
   const { isSignedIn } = useUser();
+  const router = useRouter();
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const videos = document.querySelectorAll('.video-slide video');
+    if (videos.length > 0) {
+      videos[0].play();
+    }
+  }, []);
+
+  const videos = [
+    { url: '/assets/1.mp4' },
+    { url: '/assets/2.mp4' },
+    { url: '/assets/3.mp4' },
+    { url: '/assets/4.mp4' },
+  ];
 
   const handleSubmit = async () => {
     const checkoutSession = await fetch("/api/checkout_sessions", {
@@ -102,181 +143,244 @@ export default function Home() {
     }
   };
 
+  const [state, handleSubmit1] = useForm("mvgpqypr");
+    if (state.succeeded) {
+        router.push("/form");
+    }
+
   return (
     <Box className="bg-grid min-h-screen scrollbar">
-      <Sidebar />
-      <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
-        <UserButton />
+      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, backgroundColor: "black", zIndex: 1900 }}>
+        <Box 
+          sx={{ 
+            padding: "16px", // Padding inside the top bar
+            display: "flex", 
+            justifyContent: "space-between", // Space between Sidebar and the other elements
+            alignItems: "center",
+          }}
+        >
+          <Sidebar />
+          <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}>
+            <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
+              <Button 
+                sx={{
+                  px: 3,
+                  py: 1,
+                  marginRight: 2,
+                  color: "white",
+                  backgroundColor: "#8c52ff",
+                  borderRadius: "8px",
+                  textTransform: "none",
+                  "&:hover": {
+                    backgroundColor: "#cb6ce6",
+                  },
+                }}
+              >
+                Get Started
+              </Button>
+            </Link>
+            <UserButton />
+          </Box>
+        </Box>
       </Box>
+      
 
       <Container maxWidth="lg" sx={{ position: "relative", zIndex: 10, pt: 10 }}>
-        <Box sx={{ textAlign: "center", my: 4 }}>
-          <Typography variant="h2" className="cycle-colors">
-            Welcome to <Box component="span" sx={{ fontWeight: 600}}>Notefy</Box>
-          </Typography>
-          <Typography variant="h5" sx={{ color: "gray" }}>
-            Build your flashcards today!
-          </Typography>
-          <Button
-            sx={{
-              mt: 2,
-              px: 3,
-              py: 1,
-              color: "white",
-              backgroundColor: "#5f8ecf",
-              borderRadius: "8px",
-              textTransform: "none",
-              '&:hover': {
-                backgroundColor: "#F9FAFB",
-                color: "black",
-              },
-            }}
-            href={isSignedIn ? "/generate" : "/sign-up"}
-            className="font-thin"
-          >
-            Get Started
-          </Button>
-        </Box>
+        <div className="video-slideshow">
+          <Slider ref = {sliderRef} {...settings}>
+            {videos.map((video, index) => (
+              <div key={index} className="video-slide">
+                <video width="100%" muted playsInLine loop>
+                  <source src={video.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            ))}
+          </Slider>
+        </div>
 
-        <Grid container spacing={2} justifyContent="center" sx={{ my: 12 }}>
-          <Grid item sx={{ mx: 3 }}>
-            <motion.div variants={imageVariantsLeft} initial="hidden" animate="visible">
-              <img src="/assets/Flashcards.jpg" alt="Flashcard 1" style={{ width: 500, height: 500 }} />
-            </motion.div>
-          </Grid>
-          <Grid item sx={{ mx: 3 }}>
-            <motion.div variants={imageVariantsRight} initial="hidden" animate="visible">
-              <img src="/assets/Flashcards2.jpg" alt="Flashcard 2" style={{ width: 500, height: 500 }} />
-            </motion.div>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={2} justifyContent="center" sx={{ my: 12 }}>
-          <Grid item xs={12} md={4}>
-            <Typography variant="h4" component="h2" sx={{ color: "#a2b3cd", mb: 3 }}>
-              Key Features
-            </Typography>
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <Grid container direction="column" spacing={3}>
-                <Grid item>
-                  <motion.div variants={itemVariants}>
-                    <Item>
-                      <Typography variant="h6" sx={{ color: "black" }}>
-                        Feature 1
-                      </Typography>
-                      <Typography sx={{ color: "black" }}>
-                        Input your materials and get your flashcards today!
-                      </Typography>
-                    </Item>
-                  </motion.div>
-                </Grid>
-                <Grid item>
-                  <motion.div variants={itemVariants}>
-                    <Item>
-                      <Typography variant="h6" sx={{ color: "black" }}>
-                        Feature 2
-                      </Typography>
-                      <Typography sx={{ color: "black" }}>
-                        Input your materials and get your flashcards today!
-                      </Typography>
-                    </Item>
-                  </motion.div>
-                </Grid>
-                <Grid item>
-                  <motion.div variants={itemVariants}>
-                    <Item>
-                      <Typography variant="h6" sx={{ color: "black" }}>
-                        Feature 3
-                      </Typography>
-                      <Typography sx={{ color: "black" }}>
-                        Input your materials and get your flashcards today!
-                      </Typography>
-                    </Item>
-                  </motion.div>
-                </Grid>
-              </Grid>
-            </motion.div>
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <motion.div variants={imageVariantsRight} initial="hidden" animate="visible">
-              <img src="/assets/Students.jpg" alt="Students" style={{ width: 450, height: 'auto', paddingLeft: 5}} />
-            </motion.div>
-          </Grid>
-        </Grid>
-
-        <Box sx={{ my: 6, textAlign: "center", pb: 10 }}>
-          <Typography variant="h4" sx={{ color: "#a2b3cd", pb: 4 }}>
+        <Box sx={{ pt: 10, textAlign: 'center' }}>
+          <Typography variant="h3" sx={{ color: "#a2b3cd", pb: 15, align:'center' }}>
             Pricing
           </Typography>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            custom={3}
-          >
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} alignItems={"center"}>
-              <Grid item xs={6}>
-                <motion.div variants={pricing1}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{ color: "black" }}>
-                      Basic Plan
+          <Container maxWidth="lg">
+            <Grid container spacing={4} justifyContent="center">
+              <Grid item xs={12} md={6} lg={4}>
+                <Box
+                  sx={{
+                    backgroundColor: '#6a4ca1', // Purple background for Free plan
+                    borderRadius: 2,
+                    p: 4,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Box
+                  sx={{
+                    backgroundColor: 'white', // Purple background for Free plan
+                    borderRadius: 2,
+                    marginTop:-12,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography variant="h6" color="black">
+                    Free
+                  </Typography>
+                  <Typography variant="h3" color="black" sx={{ my: 2 }}>
+                    $0
+                  </Typography>
+                  <Typography variant="body1" color="black" sx={{ mb: 4 }}>
+                    PER MONTH
+                  </Typography>
+                </Box>
+                  
+                  <Box sx={{ mb: 4, textAlign: 'left' }}>
+                  <Typography variant="body1" color="white">
+                    ✓ Generate your flashcard from limited PDF uploads, YouTube Video Link or Text.
                     </Typography>
-                    <Typography sx={{ color: "black" }}>
-                      Access to basic features and limited storage
+                    <Typography variant="body1" color="white">
+                    ✓  5 Flashcard Generation / day
                     </Typography>
-                    <Button sx={{
-                      mt: 2,
-                      px: 3,
-                      py: 1,
-                      color: "white",
-                      backgroundColor: "#5f8ecf",
-                      borderRadius: "8px",
-                      textTransform: "none",
+                    <Typography variant="body1" color="white">
+                    ✓  10 saved flashcard collections
+                    </Typography>
+                    <Typography variant="body1" color="white">
+                    
+                    </Typography>
+                  </Box>
+                  <Link href='/generate'>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: 'white',
+                      color: '#6a4ca1',
                       '&:hover': {
-                        backgroundColor: "#F9FAFB",
-                        color: "black",
+                        backgroundColor: '#f0f0f0',
                       },
-                    }}>
-                      Go Basic
-                    </Button>
-                  </Item>
-                </motion.div>
+                    }} 
+                  > 
+                    Get Started
+                  </Button>
+                  </Link>
+                  
+                </Box>
               </Grid>
 
-              <Grid item xs={6}>
-                <motion.div variants={pricing2}>
-                  <Item>
-                    <Typography variant="h6" gutterBottom sx={{ color: "black" }}>
-                      Premium
+              <Grid item xs={12} md={6} lg={4}>
+              <motion.div variants={pricing2} initial="hidden" animate="visible">
+                <Box
+                  sx={{
+                    backgroundColor: '#2bb673', // Green background for Plus plan
+                    borderRadius: 2,
+                    p: 4,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Box
+                  sx={{
+                    backgroundColor: 'white', 
+                    borderRadius: 2,
+                    marginTop:-12,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography variant="h6" color="black">
+                    Pro
+                  </Typography>
+                  <Typography variant="h3" color="black" sx={{ my: 2 }}>
+                    $10
+                  </Typography>
+                  <Typography variant="body1" color="black" sx={{ mb: 4 }}>
+                    PER MONTH
+                  </Typography>
+                </Box>
+                  <Box sx={{ mb: 4, textAlign: 'left' }}>
+                    <Typography variant="body1" color="white">
+                    ✓ Generate your flashcard from unlimited PDF uploads, YouTube Video Link or Text.
                     </Typography>
-                    <Typography sx={{ color: "black" }}>
-                      Input your materials and get your flashcards today!
+                    <Typography variant="body1" color="white">
+                    ✓  Unlimited Flashcard Generation
                     </Typography>
-                    <Button sx={{
-                      mt: 2,
-                      px: 3,
-                      py: 1,
-                      color: "white",
-                      backgroundColor: "#5f8ecf",
-                      borderRadius: "8px",
-                      textTransform: "none",
+                    <Typography variant="body1" color="white">
+                    ✓  Save all your flashcard collections
+                    </Typography>
+                  </Box>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: 'white',
+                      color: '#2bb673',
                       '&:hover': {
-                        backgroundColor: "#F9FAFB",
-                        color: "black",
+                        backgroundColor: '#f0f0f0',
                       },
-                    }} onClick={handleSubmit}>
-                      Go Pro
-                    </Button>
-                  </Item>
+                    }} onClick={handleSubmit}
+                  >
+                    Get Plan
+                  </Button>
+                </Box>
                 </motion.div>
               </Grid>
             </Grid>
-          </motion.div>
+          </Container>
         </Box>
+        <Box sx={{ pt: 10, pb: 5, mt: 2, mb: 10, borderRadius: 3, backgroundColor: "#000000", textAlign: 'center',  }}>
+          <Container maxWidth="sm">
+          <Typography variant="h3" sx={{ color: "#a2b3cd", pb: 2, align:'center' }}>
+            Contact Us
+          </Typography>
+            <Typography variant="h5" sx={{ mb: 3, color: "white" }}>
+              Drop down a message below 👇
+            </Typography>
+            <form onSubmit={handleSubmit1}>
+              <TextField
+                id="email"
+                type="email"
+                name="email"
+                label="Email Address"
+                fullWidth
+                margin="normal"
+                required
+                InputProps={{
+                  style: { backgroundColor: "white" }
+                }}
+              />
+              <ValidationError 
+                prefix="Email" 
+                field="email"
+                errors={state.errors}
+              />
+              <TextField
+                id="message"
+                name="message"
+                label="Your Message"
+                fullWidth
+                margin="normal"
+                multiline
+                rows={4}
+                required
+                InputProps={{
+              style: { backgroundColor: "white" }
+            }}
+              />
+              <ValidationError 
+                prefix="Message" 
+                field="message"
+                errors={state.errors}
+              />
+              <Button 
+                type="submit" 
+                disabled={state.submitting}
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+              >
+                Submit
+              </Button>
+            </form>
+          </Container>
+        </Box>
+
+        
+
       </Container>
     </Box>
   );
