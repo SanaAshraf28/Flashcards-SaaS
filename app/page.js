@@ -161,15 +161,16 @@ export default function Home() {
         >
           <Sidebar />
           <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
-            <UserButton />
-        </Box>
-          <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}>
+            {/* <UserButton /> */}
+        {/* </Box>
+          <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}> */}
             <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
               <Button 
                 sx={{
                   px: 3,
                   py: 1,
-                  marginRight: 2,
+                  marginRight: 5,
+                  marginTop: -0.75,
                   color: "white",
                   backgroundColor: "#8c52ff",
                   borderRadius: "8px",
@@ -181,8 +182,10 @@ export default function Home() {
               >
                 Get Started
               </Button>
+              <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
+              <UserButton />
+              </Box>
             </Link>
-            <UserButton />
           </Box>
         </Box>
       </Box>
