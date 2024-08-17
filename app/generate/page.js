@@ -2,6 +2,8 @@
 import { useUser, UserButton } from '@clerk/nextjs';
 import { CardActionArea, Card, CardContent, Container, Dialog, DialogActions, TextField, DialogContent, DialogContentText, DialogTitle, Typography, Box, Paper, Grid, CircularProgress, Button } from '@mui/material';
 import { useState, useEffect } from 'react';
+import { writeBatch, doc, collection, getDoc,  } from 'firebase/firestore';
+import { db } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
 import Sidebar from '../components/Sidebar';
@@ -102,6 +104,28 @@ export default function Generate() {
             alert('Please enter a name');
             return;
         }
+        const batch = writeBatch(db);
+        const userDocRef = doc(collection(db, 'users'), user.id);
+        const docSnap = await getDoc(userDocRef);
+
+        if (docSnap.exists()) {
+            const collections = docSnap.data().flashcards || [];
+            if (collections.find((f) => f.name === name)) {
+                alert('Flashcard collection with the same name already exists.');
+                return;
+            } else {
+                collections.push({ name });
+                batch.set(userDocRef, { flashcards: collections }, { merge: true });
+            }
+        } else {
+            batch.set(userDocRef, { flashcards: [{ name }] });
+        }
+        const colRef = collection(userDocRef, name);
+        flashcards.forEach((flashcard) => {
+            const cardDocRef = doc(colRef);
+            batch.set(cardDocRef, flashcard);
+        });
+        await batch.commit();
         handleClose();
         router.push('/flashcards');
     };

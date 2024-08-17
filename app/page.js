@@ -199,24 +199,36 @@ export default function Home() {
           </Slider>
         </div>
 
-        <Box sx={{ pt: 10, textAlign: 'center' }}>
-          <Typography variant="h3" sx={{ color: "#a2b3cd", pb: 15, align:'center' }}>
-            Pricing
-          </Typography>
-          <Container maxWidth="lg">
-            <Grid container spacing={4} justifyContent="center">
+        <Box sx={{ pt: 5, textAlign: 'center', 
+          
+        }}>
+          <Typography variant='h3' sx={{ pb: 15, fontWeight: 500 }} className="cycle-colors">Pricing</Typography>
+          <Container maxWidth="lg" >
+            <Grid container spacing={4} justifyContent="center" 
+            sx={{'@media (max-width: 900px)': {
+            '& > *': {
+              mb: 12,
+            },
+            '& > *:last-child': {
+              mb: 0,
+            }}}} >
               <Grid item xs={12} md={6} lg={4}>
                 <Box
                   sx={{
-                    backgroundColor: '#6a4ca1', // Purple background for Free plan
                     borderRadius: 2,
+                    background: 'linear-gradient(135deg, #6a4ca1 40%, #e2ebf0 100%)',
                     p: 4,
                     textAlign: 'center',
+                    '&:hover': {
+                      backgroundColor: "#a2b3cd",
+                      boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)',  // Glare effect
+                      // filter: 'brightness(1.2)',  // Make the box brighter on hover
+                      transform: 'scale(1.02)',}
                   }}
                 >
                   <Box
                   sx={{
-                    backgroundColor: 'white', // Purple background for Free plan
+                    backgroundColor: 'white', 
                     borderRadius: 2,
                     marginTop:-12,
                     textAlign: 'center',
@@ -269,11 +281,19 @@ export default function Home() {
               <motion.div variants={pricing2} initial="hidden" animate="visible">
                 <Box
                   sx={{
-                    backgroundColor: '#2bb673', // Green background for Plus plan
+                    background: 'linear-gradient(135deg, #076b1a 30%, #e2ebf0 100%)',
                     borderRadius: 2,
                     p: 4,
                     textAlign: 'center',
-                  }}
+                    transition: "left 0.6s ease",
+                    '&:hover': {
+                      backgroundColor: "#a2b3cd",
+                      boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)',  // Glare effect
+                      // filter: 'brightness(1.2)',  // Make the box brighter on hover
+                      transform: 'scale(1.02)',
+                      
+                    },
+                  }} 
                 >
                   <Box
                   sx={{
@@ -293,7 +313,8 @@ export default function Home() {
                     PER MONTH
                   </Typography>
                 </Box>
-                  <Box sx={{ mb: 4, textAlign: 'left' }}>
+                  <Box sx={{ mb: 4, textAlign: 'left' ,
+                  }}>
                     <Typography variant="body1" color="white">
                     ✓ Generate your flashcard from unlimited PDF uploads, YouTube Video Link or Text.
                     </Typography>
@@ -324,10 +345,10 @@ export default function Home() {
         </Box>
         <Box sx={{ pt: 10, pb: 5, mt: 2, mb: 10, borderRadius: 3, backgroundColor: "#000000", textAlign: 'center',  }}>
           <Container maxWidth="sm">
-          <Typography variant="h3" sx={{ color: "#a2b3cd", pb: 2, align:'center' }}>
+          <Typography variant="h3" sx={{ color: "#a2b3cd", pb: 2, align:'center' }} className="cycle-colors">
             Contact Us
           </Typography>
-            <Typography variant="h5" sx={{ mb: 3, color: "white" }}>
+            <Typography variant="h5" sx={{ mb: 3, color: "white" }} >
               Drop down a message below 👇
             </Typography>
             <form onSubmit={handleSubmit1}>

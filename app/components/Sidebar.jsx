@@ -5,6 +5,7 @@ import { FaBars } from "react-icons/fa";  // Importing the menu icon from react-
 import HomeIcon from '@mui/icons-material/Home';  // Importing the Home icon from MUI
 import { RiAiGenerate } from "react-icons/ri";  // Importing the Generate icon from react-icons/ri
 import { FaBookmark } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ const Sidebar = () => {
     setIsOpen(!isOpen);
   };
 
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <>
