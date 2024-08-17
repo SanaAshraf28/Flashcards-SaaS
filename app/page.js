@@ -150,10 +150,9 @@ export default function Home() {
 
   return (
     <Box className="bg-grid min-h-screen scrollbar">
-      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, backgroundColor: "black", zIndex: 1900 }}>
+      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, zIndex: 1900 }}>
         <Box 
           sx={{ 
-            padding: "16px", // Padding inside the top bar
             display: "flex", 
             justifyContent: "space-between", // Space between Sidebar and the other elements
             alignItems: "center",
