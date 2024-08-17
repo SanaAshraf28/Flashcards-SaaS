@@ -12,6 +12,7 @@ import React, { useRef, useEffect } from "react";
 import { useForm, ValidationError } from '@formspree/react';
 import { useRouter } from "next/navigation";
 
+
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: "center",
@@ -159,6 +160,9 @@ export default function Home() {
           }}
         >
           <Sidebar />
+          <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
+            <UserButton />
+        </Box>
           <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}>
             <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
               <Button 
