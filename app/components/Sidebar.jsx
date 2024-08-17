@@ -5,18 +5,13 @@ import { FaBars } from "react-icons/fa";  // Importing the menu icon from react-
 import HomeIcon from '@mui/icons-material/Home';  // Importing the Home icon from MUI
 import { RiAiGenerate } from "react-icons/ri";  // Importing the Generate icon from react-icons/ri
 import { FaBookmark } from "react-icons/fa";
-import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser(); // Get the user information from Clerk
-
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
-
-  // const router = useRouter();
-
   return (
     <>
       <IconButton
@@ -36,7 +31,6 @@ const Sidebar = () => {
       >
         <FaBars />
       </IconButton>
-
       {!isOpen && (
         <Typography variant="h5" sx={{ 
           position: "fixed", 
@@ -50,14 +44,12 @@ const Sidebar = () => {
           </Link>
         </Typography>
       )}
-
       <Drawer anchor="left" open={isOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative", marginTop:3 }}>
+        <Box sx={{ width: 250, bgcolor: "#a2b3cd", color: "#020617", height: "100%", position: "relative" }}>
           <List>
             <ListItem>
               <Typography variant="h6" sx={{ fontWeight: 600 }}>Notefy</Typography>
             </ListItem>
-
             
               <Box sx={{ 
                 display: 'flex', 
@@ -105,7 +97,6 @@ const Sidebar = () => {
                   </Box>
                 </SignedIn>
               </Box>
-
               <ListItem button component="a" href="/" onClick={toggleDrawer}>
                 <HomeIcon sx={{ marginRight: 1.5 }} />
                 <ListItemText primary="Home" sx={{ pt: .5 }}/>
@@ -121,7 +112,7 @@ const Sidebar = () => {
                 <ListItemText primary="Saved Collections" sx={{ pb: .25, ml: 2 }} />
               </ListItem>
             </SignedIn>
-            
+
             <SignedOut>
               <ListItem button component="a" href="/sign-in" onClick={toggleDrawer}>
                 <ListItemText primary="Login" />
