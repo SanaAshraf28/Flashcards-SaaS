@@ -89,7 +89,7 @@ export default function Flashcards(){
                                             borderRadius: '15px',
                                             background: 'linear-gradient(135deg, #ea8366 0%, #a26b4b 100%)', }}>
                             <CardActionArea onClick={() => (handleCardClick(flashcard.name))}>
-                                <CardContent>
+                                <CardContent>  
                                     <Typography variant="h6">{flashcard.name}</Typography>
                                 </CardContent>
                             </CardActionArea>

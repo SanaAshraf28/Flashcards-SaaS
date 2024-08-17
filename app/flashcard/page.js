@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation"
 import Sidebar from '../components/Sidebar';
 import { IoArrowBack } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import SlideshowIcon from '@mui/icons-material/Slideshow';
 
 
 
@@ -38,6 +39,11 @@ export default function Flashcard() {
         }
         getFlashcard()
     }, [user, search])
+
+    const handleSlideshow = () => {
+        localStorage.setItem('flashcards', JSON.stringify(flashcards));
+        router.push('/slideshow');
+    };
 
     const handleCardClick = (id) => {
         setFlipped((prev) => ({
@@ -70,26 +76,33 @@ export default function Flashcard() {
                             position: 'relative',
                         }}
                     >
+                        
                         <Typography
-        variant='h4'
-        sx={{
-            pb: 2,
-            fontWeight: 500,
-            display: 'flex',
-            alignItems: 'center',
-            cursor: 'pointer',
-        }}
-        className="cycle-colors"
-    >
-        <Button
-            onClick={() => router.push('/flashcards')}
-        >
-            <IoArrowBack size={24} color="white" />
-        </Button>
-        Saved Flashcards
-    </Typography>
-        <Container maxWidth = "100vw">
-        <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
+                            variant='h4'
+                            sx={{
+                                pb: 2,
+                                fontWeight: 500,
+                                display: 'flex',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                            }}
+                            className="cycle-colors"
+                        >
+                            <Button
+                                onClick={() => router.push('/flashcards')}
+                            >
+                                <IoArrowBack size={24} color="white" />
+                            </Button>
+                            Saved Flashcards
+                            <Button
+                            startIcon={<SlideshowIcon />}
+                            onClick={handleSlideshow}
+                            sx={{ ml: 2 }}
+                            >
+                            </Button>
+                        </Typography>
+                        <Container maxWidth = "100vw">
+                        <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
                             {flashcards.map((flashcard, index) => (
                                 <Grid item xs={12} sm={6} md={4} key={index}>
                                     <Card

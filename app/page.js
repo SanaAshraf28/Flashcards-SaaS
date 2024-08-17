@@ -207,7 +207,7 @@ export default function Home() {
             <Grid container spacing={4} justifyContent="center" 
             sx={{'@media (max-width: 900px)': {
             '& > *': {
-              mb: 12,
+              mb: 15,
             },
             '& > *:last-child': {
               mb: 0,
