@@ -271,13 +271,23 @@ export default function DataInput({ onSubmit }) {
             </Paper>
 
             <Button
-                variant="contained"
-                color="primary"
+                sx={{
+                mt: 2,
+                px: 3,
+                py: 1,
+                color: "white",
+                backgroundColor: "#5f8ecf",
+                borderRadius: "8px",
+                textTransform: "none",
+                '&:hover': {
+                    backgroundColor: "#F9FAFB",
+                    color: "black",
+                },
+                }}
                 onClick={handleSubmit}
-                fullWidth
-                sx={{ mt: 3 }}
+                className="font-thin"
             >
-                Submit
+                Generate
             </Button>
         </Box>
     );

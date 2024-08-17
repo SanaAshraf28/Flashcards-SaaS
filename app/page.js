@@ -12,6 +12,7 @@ import React, { useRef, useEffect } from "react";
 import { useForm, ValidationError } from '@formspree/react';
 import { useRouter } from "next/navigation";
 
+
 const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: "center",
@@ -150,16 +151,18 @@ export default function Home() {
 
   return (
     <Box className="bg-grid min-h-screen scrollbar">
-      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, backgroundColor: "black", zIndex: 1900 }}>
+      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, zIndex: 1900 }}>
         <Box 
           sx={{ 
-            padding: "16px", // Padding inside the top bar
             display: "flex", 
             justifyContent: "space-between", // Space between Sidebar and the other elements
             alignItems: "center",
           }}
         >
           <Sidebar />
+          <Box sx={{ position: "fixed", top: 16, right: 16, zIndex: 1300 }}>
+            <UserButton />
+        </Box>
           <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}>
             <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
               <Button 
