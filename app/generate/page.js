@@ -60,39 +60,19 @@ export default function Generate() {
         });
     };
 
-    // const extractTextFromPDF = async (file) => {
-    //     const fileReader = new FileReader();
-    //     return new Promise((resolve, reject) => {
-    //         fileReader.onload = async () => {
-    //             try {
-    //                 const arrayBuffer = fileReader.result;
-    //                 const pdf = await pdfjsLib.getDocument(new Uint8Array(arrayBuffer)).promise;
-    //                 let text = '';
-    //                 for (let i = 0; i < pdf.numPages; i++) {
-    //                     const page = await pdf.getPage(i + 1);
-    //                     const content = await page.getTextContent();
-    //                     const pageText = content.items.map(item => item.str).join(' ');
-    //                     text += pageText + '\n';
-    //                 }
-    //                 resolve(text);
-    //             } catch (error) {
-    //                 reject(error);
-    //             }
-    //         };
-    //         fileReader.onerror = (error) => reject(error);
-    //         fileReader.readAsArrayBuffer(file);
-    //     });
-    // };
-
     const extractTextFromPDF = async (file) => {
+        // Create a FileReader and read the file as an ArrayBuffer
         const fileReader = new FileReader();
     
-        // Create a promise that resolves when the file is read
-        const arrayBuffer = await new Promise((resolve, reject) => {
-            fileReader.onload = () => resolve(fileReader.result);
-            fileReader.onerror = (error) => reject(error);
-            fileReader.readAsArrayBuffer(file);
-        });
+        const loadFile = (file) => {
+            return new Promise((resolve, reject) => {
+                fileReader.onload = () => resolve(fileReader.result);
+                fileReader.onerror = (error) => reject(error);
+                fileReader.readAsArrayBuffer(file);
+            });
+        };
+    
+        const arrayBuffer = await loadFile(file);
     
         // Load the PDF document
         const pdf = await pdfjsLib.getDocument(new Uint8Array(arrayBuffer)).promise;
