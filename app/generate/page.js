@@ -61,34 +61,31 @@ export default function Generate() {
         });
     };
 
+    const extractTextFromPDF = async (file) => {
+        const fileReader = new FileReader();
     
-    // const extractTextFromPDF = async (file) => {
-    //     const formData = new FormData();
-    //     formData.append('file', file);
-
-    //     try {
-    //         const response = await axios.post(
-    //             'https://api.pdf.co/v1/pdf/convert/to/text',
-    //             formData,
-    //             {
-    //                 headers: {
-    //                     'Content-Type': 'multipart/form-data',
-    //                     'x-api-key': process.env.NEXT_PUBLIC_PDF_CO_API_KEY, // Use environment variable
-    //                 },
-    //             }
-    //         );
-
-    //         const { data } = response;
-    //         if (data.error) {
-    //             throw new Error(data.message);
-    //         }
-
-    //         return data.text;
-    //     } catch (error) {
-    //         console.error('Error extracting text from PDF:', error);
-    //         throw error;
-    //     }
-    // };
+        // Create a promise that resolves when the file is read
+        const arrayBuffer = await new Promise((resolve, reject) => {
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.onerror = (error) => reject(error);
+            fileReader.readAsArrayBuffer(file);
+        });
+    
+        // Load the PDF document
+        const pdf = await pdfjsLib.getDocument(new Uint8Array(arrayBuffer)).promise;
+    
+        let text = '';
+        // Extract text from each page
+        for (let i = 0; i < pdf.numPages; i++) {
+            const page = await pdf.getPage(i + 1);
+            const content = await page.getTextContent();
+            const pageText = content.items.map(item => item.str).join(' ');
+            text += pageText + '\n';
+        }
+    
+        return text;
+    };
+    
         
 
     const handleCardClick = (id) => {
