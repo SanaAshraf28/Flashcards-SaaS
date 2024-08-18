@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import React, { useRef, useEffect } from "react";
 import { useForm, ValidationError } from '@formspree/react';
 import { useRouter } from "next/navigation";
+import { Analytics } from "@vercel/analytics/react"
 
 
 const Item = styled(Paper)(({ theme }) => ({

@@ -245,8 +245,7 @@ export default function Generate() {
                         </Box>
                     </Box>
                 )}
-
-                {<Dialog
+                <Dialog
                     open={open}
                     onClose={handleClose}
                     PaperProps={{
@@ -327,7 +326,7 @@ export default function Generate() {
                             Save
                         </Button>
                     </DialogActions>
-                </Dialog>}
+                </Dialog>
             </Container>
         </Box>
     </>
