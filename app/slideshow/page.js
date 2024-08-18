@@ -12,6 +12,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import { IconButton } from '@mui/material';
 
+
 export default function Slideshow() {
     const router = useRouter();
     const [announcementsEnabled, setAnnouncementsEnabled] = useState(false);
@@ -49,13 +50,13 @@ export default function Slideshow() {
             setCurrentUtterance(utterance);
             synth.speak(utterance);
 
-            // Clean up current utterance on component unmount
             return () => {
                 if (currentUtterance) {
                     synth.cancel();
                 }
             };
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentSlide, announcementsEnabled, flashcards, synth]);
 
 
