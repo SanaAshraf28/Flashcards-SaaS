@@ -58,8 +58,6 @@ export default function Slideshow() {
         }
     }, [currentSlide, announcementsEnabled, flashcards, synth]);
 
-    // const synth = window.speechSynthesis;
-    // let currentUtterance = null;
 
     const handlePrevSlide = () => {
         setCurrentSlide(prev => (prev === 0 ? flashcards.length - 1 : prev - 1));

@@ -246,8 +246,7 @@ export default function Generate() {
                     </Box>
                 )}
 
-                /* Dialog for saving flashcards */
-                <Dialog
+                {<Dialog
                     open={open}
                     onClose={handleClose}
                     PaperProps={{
@@ -328,7 +327,7 @@ export default function Generate() {
                             Save
                         </Button>
                     </DialogActions>
-                </Dialog>
+                </Dialog>}
             </Container>
         </Box>
     </>
