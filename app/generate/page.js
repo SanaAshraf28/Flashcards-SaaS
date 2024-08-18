@@ -7,6 +7,7 @@ import { db } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import * as pdfjsLib from 'pdfjs-dist/webpack';
 import Sidebar from '../components/Sidebar';
+import axios from 'axios';
 import DataInput from '../components/DataInput';  // Import the DataInput component
 
 export default function Generate() {
@@ -60,34 +61,35 @@ export default function Generate() {
         });
     };
 
-    const extractTextFromPDF = async (file) => {
-        // Create a FileReader and read the file as an ArrayBuffer
-        const fileReader = new FileReader();
     
-        const loadFile = (file) => {
-            return new Promise((resolve, reject) => {
-                fileReader.onload = () => resolve(fileReader.result);
-                fileReader.onerror = (error) => reject(error);
-                fileReader.readAsArrayBuffer(file);
-            });
-        };
-    
-        const arrayBuffer = await loadFile(file);
-    
-        // Load the PDF document
-        const pdf = await pdfjsLib.getDocument(new Uint8Array(arrayBuffer)).promise;
-    
-        let text = '';
-        // Extract text from each page
-        for (let i = 0; i < pdf.numPages; i++) {
-            const page = await pdf.getPage(i + 1);
-            const content = await page.getTextContent();
-            const pageText = content.items.map(item => item.str).join(' ');
-            text += pageText + '\n';
-        }
-    
-        return text;
-    };
+    // const extractTextFromPDF = async (file) => {
+    //     const formData = new FormData();
+    //     formData.append('file', file);
+
+    //     try {
+    //         const response = await axios.post(
+    //             'https://api.pdf.co/v1/pdf/convert/to/text',
+    //             formData,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'multipart/form-data',
+    //                     'x-api-key': process.env.NEXT_PUBLIC_PDF_CO_API_KEY, // Use environment variable
+    //                 },
+    //             }
+    //         );
+
+    //         const { data } = response;
+    //         if (data.error) {
+    //             throw new Error(data.message);
+    //         }
+
+    //         return data.text;
+    //     } catch (error) {
+    //         console.error('Error extracting text from PDF:', error);
+    //         throw error;
+    //     }
+    // };
+        
 
     const handleCardClick = (id) => {
         setFlipped((prev) => ({
