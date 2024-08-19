@@ -8,7 +8,7 @@ from generate_flashcards import generate_flashcards_from_youtube
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}}) # CORS(app, resources={r"/*": {"origins": "https://your-frontend-domain.vercel.app"}})
+CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}}) # CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}})
 
 
 @app.route('/api/generate-flashcards', methods=['POST'])
@@ -21,11 +21,12 @@ def generate_flashcards_endpoint():
     
     try:
         flashcards_json = generate_flashcards_from_youtube(youtube_url) # Generate flashcards in json format
-        # print(f"Generated flashcards: {flashcards_json}")  # For debugging
+        print(f"Generated flashcards: {flashcards_json}")  # For debugging
         return flashcards_json
 
     except Exception as e:
-        print(f"Error occurred: {str(e)}")  # For debugging
+        error_message = f"Error occurred: {str(e)}"  # For debugging
+        print(error_message)
         return jsonify({'error': str(e)}), 500
     
 if __name__ == '__main__':
