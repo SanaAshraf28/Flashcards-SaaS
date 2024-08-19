@@ -39,7 +39,7 @@ export default function Generate() {
 
         if (activeTab === 'youtube' && youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-            url = `${process.env.NEXT_PUBLIC_API_URL}`;
+            url = 'https://flashcards-saas.onrender.com/api/generate-flashcards';
             // url = 'http://localhost:5000/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
@@ -51,7 +51,14 @@ export default function Generate() {
             },
             body: JSON.stringify(body),
         })
-        .then((res) => res.json())
+        .then((res) => {
+            if (!res.ok) {
+                return res.text().then(text => {
+                    throw new Error(`Server error: ${text}`);
+                });
+            }
+            return res.json();
+        })
         .then((data) => {
             setFlashcards(activeTab === 'youtube' ? data.flashcards || [] : data);
             setLoading(false);
