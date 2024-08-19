@@ -152,8 +152,8 @@ export default function Home() {
 
   return (
     <Box className="bg-grid min-h-screen scrollbar">
-      <Head>
-              {/* Google Tag Manager */}
+      {/* <Head>
+              { Google Tag Manager }
               dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -161,8 +161,8 @@ export default function Home() {
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-MTJTHVZN');`,
           }}
-        {/* End Google Tag Manager --> */}
-      </Head>
+        { End Google Tag Manager --> }
+      </Head> */}
       <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, zIndex: 1900 }}>
         <Box 
           sx={{ 

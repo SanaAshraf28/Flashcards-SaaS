@@ -119,7 +119,7 @@ export default function DataInput({ onSubmit }) {
                                 placeholder="Paste in your notes or other content"
                                 sx={{
                                     width: '100%',
-                                    height: '100%',
+                                    height: '330px',
                                     border: 'none',
                                     outline: 'none',
                                     backgroundColor: 'transparent',
