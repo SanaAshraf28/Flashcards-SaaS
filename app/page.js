@@ -187,7 +187,7 @@ export default function Home() {
       </Box>
       
 
-      <Container maxWidth="lg" sx={{ position: "relative", pt: 10 }}>
+      <Container maxWidth="lg" sx={{ position: "relative", pt: 10}}>
         <div className="gif-slideshow">
           <Slider ref = {sliderRef} {...settings}>
             {gifs.map((gif, index) => (

@@ -62,10 +62,9 @@ const Sidebar = () => {
                 <SignedIn>
                 <Box
                   sx={{
-                    width: 500,
-                    height: "auto",
+                    width: "250px",
+                    height: "250px",
                     backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
-                    padding: 16, 
                   }}
                 />
                   <Box sx={{ 
