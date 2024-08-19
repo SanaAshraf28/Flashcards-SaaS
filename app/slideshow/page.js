@@ -137,7 +137,16 @@ export default function Slideshow() {
                 sx={{ ml: 2 }}
                 >
                 </Button>
-                <Box sx={{ position: "relative", top: 66, right: -35, zIndex: 1300, color: "white" }}>
+                <Box sx={{ 
+                    position: "relative", 
+                    top: 66, right: -35, 
+                    zIndex: 1300, 
+                    color: "white",
+                    '@media (max-width: 600px)': {
+                        right: 60,
+                        top: 90
+                        }
+                    }}>
                     <IconButton onClick={toggleAnnouncements}>
                         {announcementsEnabled ? <VolumeUpIcon /> : <VolumeOffIcon />}
                     </IconButton>

@@ -1,3 +1,4 @@
+"use client"
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { Drawer, List, ListItem, ListItemText, Typography, IconButton, Box, Link } from "@mui/material";
 import { useState } from "react";
@@ -58,12 +59,11 @@ const Sidebar = () => {
                 position: 'relative',
               }}>
                 <Box
-                  component="img"
-                  src="/assets/Flashcards2.jpg"
-                  alt="Profile Background"
                   sx={{
-                    width: 250,
+                    width: 500,
                     height: "auto",
+                    backgroundImage: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 
+                    padding: 16, 
                   }}
                 />
                 <SignedIn>

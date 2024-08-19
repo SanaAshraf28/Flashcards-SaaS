@@ -1,34 +1,29 @@
 import { SignIn } from "@clerk/nextjs";
-import { AppBar, Container, Typography, Toolbar, Button, Box } from "@mui/material";
+import { AppBar, Container, Typography, Toolbar, Button, Box, Navbar } from "@mui/material";
 import Link from "next/link";
+import Sidebar from "../../components/Sidebar";
 
 export default function SignUpPage(){
-    return <Container maxWidth="sm">
-        <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
-            <Toolbar>
-                <Typography
-                    variant="h6"
-                    sx={{flexGrow:1,
-                    }}
-                >
-                    Flashcard SaaS
-                </Typography>
-                <Button color="inherit">
-                    <Link href="/sign-in" passHref>
-                    Login
-                    </Link>
-                </Button>
-                <Button color="inherit">
-                    <Link href="/sign-up" passHref>
-                    Sign up
-                    </Link>
-                </Button>
-            </Toolbar>
-        </AppBar>
-
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-            <Typography variant="h4">Sign In</Typography>
+    return (
+    <Box className="bg-grid min-h-screen scrollbar">
+      <Box sx={{ position: "fixed", top: 0, right: 0, left: 0, zIndex: 1900 }}>
+        <Box 
+          sx={{ 
+            display: "flex", 
+            justifyContent: "space-between", // Space between Sidebar and the other elements
+            alignItems: "center",
+          }}
+        >
+          <Sidebar />
+        </Box>
+        </Box>          
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+        sx = {{
+            paddingTop: '80px',
+        }}
+        >
             <SignIn />       
         </Box>
-    </Container>
+    </Box>
+    )
 }

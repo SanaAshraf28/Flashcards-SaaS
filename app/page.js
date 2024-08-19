@@ -165,7 +165,7 @@ export default function Home() {
             {/* <UserButton /> */}
         {/* </Box>
           <Box sx={{ display: "flex", alignItems: "center", paddingLeft:165 }}> */}
-            <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
+            <Link href={isSignedIn ? '/generate' : '/sign-in'} passHref>
               <Button 
                 sx={{
                   px: 3,
@@ -212,14 +212,14 @@ export default function Home() {
           <Typography variant='h3' sx={{ pb: 15, fontWeight: 500 }} className="cycle-colors">Pricing</Typography>
           <Container maxWidth="lg" >
             <Grid container spacing={4} justifyContent="center" 
-            sx={{'@media (max-width: 900px)': {
+            sx={{'@media (max-width: 1000px)': {
             '& > *': {
               mb: 15,
             },
             '& > *:last-child': {
               mb: 0,
             }}}} >
-              <Grid item xs={12} md={6} lg={4}>
+              <Grid item xs={12} md={6} lg={4} marginBottom={10}>
                 <Box
                   sx={{
                     borderRadius: 2,
@@ -266,7 +266,7 @@ export default function Home() {
                     
                     </Typography>
                   </Box>
-                  <Link href={isSignedIn ? '/generate' : '/sign-up'} passHref>
+                  <Link href={isSignedIn ? '{/generate}' : '/sign-up'} passHref>
                   <Button
                     variant="contained"
                     sx={{
@@ -275,7 +275,7 @@ export default function Home() {
                       '&:hover': {
                         backgroundColor: '#f0f0f0',
                       },
-                    }} 
+                    }} onClick={handleSubmit}
                   > 
                     Get Started
                   </Button>
