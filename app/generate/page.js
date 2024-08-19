@@ -155,7 +155,7 @@ export default function Generate() {
                         position: 'relative',
                     }}
                 >
-                    <Typography variant='h4' sx={{ pb: 2, fontWeight: 500 }} className="cycle-colors">Generate Flashcards</Typography>
+                    <Typography variant='h4' sx={{ pt:4, pb: 0, fontWeight: 500 }} className="cycle-colors">Generate Flashcards</Typography>
                     
                     {/* Data Input Area */}
                     <DataInput onSubmit={handleSubmit} />

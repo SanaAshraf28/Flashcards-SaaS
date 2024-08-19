@@ -78,11 +78,11 @@ export default function Flashcards(){
                             position: 'relative',
                         }}
                     >
-                        <Typography variant='h4' sx={{ pb: 2, fontWeight: 500 }} className="cycle-colors">Saved Flashcards </Typography>
+                        <Typography variant='h4' sx={{ pt: 4, fontWeight: 500 }} className="cycle-colors">Saved Flashcards </Typography>
                 
        
 
-            <Grid container spacing={3} sx={{ mt: 4 }}>
+            <Grid container spacing={3} sx={{ mt: 2 }}>
                 {flashcards.map((flashcard, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ position: 'relative', '&:hover .delete-button': { opacity: 1 }, boxShadow: '0 8px 16px rgba(0,0,0,0.3)',

@@ -80,20 +80,11 @@ const imageVariantsRight = {
 const settings = {
   dots: true,
   infinite: true,
-  speed: 500,
+  speed: 300,
   slidesToShow: 1,
   slidesToScroll: 1,
-  autoplay: false,
-  autoplaySpeed: 5000,
-  beforeChange: (current, next) => {
-    const videos = document.querySelectorAll('.video-slide video');
-    videos[current].play();
-    videos[next].currentTime = 0;
-  },
-  afterChange: (current) => {
-    const videos = document.querySelectorAll('.video-slide video');
-    videos[current].play(); // Play the video on the current slide
-  },
+  autoplay: true,
+  autoplaySpeed: 8000,
 };
 
 export default function Home() {
@@ -101,18 +92,11 @@ export default function Home() {
   const router = useRouter();
   const sliderRef = useRef(null);
 
-  useEffect(() => {
-    const videos = document.querySelectorAll('.video-slide video');
-    if (videos.length > 0) {
-      videos[0].play();
-    }
-  }, []);
-
-  const videos = [
-    { url: '/assets/1.mp4' },
-    { url: '/assets/2.mp4' },
-    { url: '/assets/3.mp4' },
-    { url: '/assets/4.mp4' },
+  const gifs = [
+    { url: '/assets/1.gif' },
+    { url: '/assets/2.gif' },
+    { url: '/assets/3.gif' },
+    { url: '/assets/4.gif' },
   ];
 
   const handleSubmit = async () => {
@@ -204,14 +188,11 @@ export default function Home() {
       
 
       <Container maxWidth="lg" sx={{ position: "relative", pt: 10 }}>
-        <div className="video-slideshow">
+        <div className="gif-slideshow">
           <Slider ref = {sliderRef} {...settings}>
-            {videos.map((video, index) => (
-              <div key={index} className="video-slide">
-                <video width="100%" muted playsInLine loop>
-                  <source src={video.url} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+            {gifs.map((gif, index) => (
+              <div key={index} className="gif-slide">
+                <img src={gif.url} alt={`Slide ${index + 1}`} width="100%" />
               </div>
             ))}
           </Slider>
