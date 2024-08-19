@@ -16,11 +16,13 @@ openai_client = OpenAI()
 def get_youtube_transcript(url): # Get transcript from the video
     try:    
         video_id = url.split("v=")[-1]
+        logging.info(f"Attempting to retrieve transcript for video ID: {video_id}")
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         full_text = " ".join([entry['text'] for entry in transcript])
+        logging.info(f"Successfully retrieved transcript. Length: {len(full_text)} characters")
         return full_text
     except Exception as e:
-        print(f"Error retrieving transcript: {e}")
+        logging.error(f"Error retrieving transcript: {str(e)}", exc_info=True)
         return None
     
 def generate_flashcards(text):
