@@ -10,15 +10,7 @@ app = Flask(__name__)
 
 CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://notefy.up.railway.app"]}}) # CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}})
 
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
-    return response
-
-@app.route('/api/generate-flashcards', methods=['OPTIONS', 'POST'])
+@app.route('/api/generate-flashcards', methods=['POST'])
 def generate_flashcards_endpoint():
     data = request.json
     youtube_url = data.get('youtube_url', '')

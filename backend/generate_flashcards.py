@@ -3,7 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path='.env.local') # Load env variables
+load_dotenv(dotenv_path='../.env.local') # Load env variables
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 os.environ['OPENAI_API_KEY'] = openai_api_key
@@ -49,6 +49,8 @@ def generate_flashcards(text):
                             "back":"string"
                         }}]
                     }}
+
+                    Please do not surround your response in ```json {{...}} ```
             """
     response = openai_client.chat.completions.create(
         model="gpt-4o-mini",
