@@ -277,7 +277,7 @@ export default function Home() {
                     
                     </Typography>
                   </Box>
-                  <Link href={isSignedIn ? '{/generate}' : '/sign-up'} passHref>
+                  <Link href={isSignedIn ? '/generate' : '/sign-in'} passHref>
                   <Button
                     variant="contained"
                     sx={{

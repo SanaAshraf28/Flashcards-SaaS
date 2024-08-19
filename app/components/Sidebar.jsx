@@ -117,9 +117,9 @@ const Sidebar = () => {
               <ListItem button component="a" href="/sign-in" onClick={toggleDrawer}>
                 <ListItemText primary="Login" />
               </ListItem>
-              <ListItem button component="a" href="/sign-up" onClick={toggleDrawer}>
+              {/* <ListItem button component="a" href="/sign-up" onClick={toggleDrawer}>
                 <ListItemText primary="Register" />
-              </ListItem>
+              </ListItem> */}
             </SignedOut>
           </List>
         </Box>
