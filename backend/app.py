@@ -21,7 +21,7 @@ def generate_flashcards_endpoint():
     try:
         flashcards_json = generate_flashcards_from_youtube(youtube_url) # Generate flashcards in json format
         print(f"Generated flashcards: {flashcards_json}")  # For debugging
-        return flashcards_json
+        return jsonify(flashcards_json)
 
     except Exception as e:
         error_message = f"Error occurred: {str(e)}"  # For debugging
