@@ -55,7 +55,7 @@ const pricing2 = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 1.5, delay: 2 },
+    transition: { duration: 1, delay: 0.5 },
   },
 };
 
@@ -192,7 +192,7 @@ export default function Home() {
       </Box>
       
 
-      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 10, pt: 10 }}>
+      <Container maxWidth="lg" sx={{ position: "relative", pt: 10 }}>
         <div className="video-slideshow">
           <Slider ref = {sliderRef} {...settings}>
             {videos.map((video, index) => (
@@ -212,7 +212,7 @@ export default function Home() {
           <Typography variant='h3' sx={{ pb: 15, fontWeight: 500 }} className="cycle-colors">Pricing</Typography>
           <Container maxWidth="lg" >
             <Grid container spacing={4} justifyContent="center" 
-            sx={{'@media (max-width: 1000px)': {
+            sx={{'@media (max-width: 900px)': {
             '& > *': {
               mb: 15,
             },
@@ -292,7 +292,7 @@ export default function Home() {
                     borderRadius: 2,
                     p: 4,
                     textAlign: 'center',
-                    transition: "left 0.6s ease",
+            
                     '&:hover': {
                       backgroundColor: "#a2b3cd",
                       boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)',  // Glare effect
