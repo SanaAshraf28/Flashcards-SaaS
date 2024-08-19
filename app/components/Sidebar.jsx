@@ -58,6 +58,8 @@ const Sidebar = () => {
                 alignItems: 'center', 
                 position: 'relative',
               }}>
+                
+                <SignedIn>
                 <Box
                   sx={{
                     width: 500,
@@ -66,7 +68,6 @@ const Sidebar = () => {
                     padding: 16, 
                   }}
                 />
-                <SignedIn>
                   <Box sx={{ 
                     position: 'absolute', 
                     top: '35%',  // Adjust to position the UserButton
