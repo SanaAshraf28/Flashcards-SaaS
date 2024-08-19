@@ -39,7 +39,7 @@ export default function Generate() {
 
         if (activeTab === 'youtube' && youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-            url = '${process.env.NEXT_PUBLIC_API_URL}';
+            url = `${process.env.NEXT_PUBLIC_API_URL}`;
             // url = 'http://localhost:5000/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
