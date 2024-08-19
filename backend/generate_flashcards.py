@@ -2,6 +2,9 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 #load_dotenv(dotenv_path='../.env.local') # Load env variables
 
@@ -65,11 +68,19 @@ def generate_flashcards(text):
 
 
 def generate_flashcards_from_youtube(youtube_url):
+    logging.info(f"Generating flashcards for URL: {youtube_url}")
     transcript = get_youtube_transcript(youtube_url)
     if transcript:
+        logging.info("Transcript retrieved successfully")
         flashcards_json = generate_flashcards(transcript)
-        return flashcards_json
+        if flashcards_json:
+            logging.info("Flashcards generated successfully")
+            return flashcards_json
+        else:
+            logging.error("Failed to generate flashcards")
+            return "Could not generate flashcards."
     else:
-        return "Could not retrieve transcript or generate flashcards."
+        logging.error("Failed to retrieve transcript")
+        return "Could not retrieve transcript."
     
 #print(generate_flashcards_from_youtube("https://www.youtube.com/watch?v=fDKIpRe8GW4"))

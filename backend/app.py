@@ -19,8 +19,9 @@ def generate_flashcards_endpoint():
         return jsonify({'error': 'No YouTube URL provided'}), 400
     
     try:
+        app.logger.info(f"Received request for URL: {youtube_url}")
         flashcards_json = generate_flashcards_from_youtube(youtube_url) # Generate flashcards in json format
-        print(f"Generated flashcards: {flashcards_json}")  # For debugging
+        app.logger.info(f"Generated flashcards: {flashcards_json}")
         return jsonify(flashcards_json)
 
     except Exception as e:

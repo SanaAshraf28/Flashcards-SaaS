@@ -60,7 +60,7 @@ export default function Generate() {
             return res.json();
         })
         .then((data) => {
-            console.log(data);
+            console.log('Server response:', data);
             setFlashcards(activeTab === 'youtube' ? data.flashcards || [] : data);
             setLoading(false);
         })
