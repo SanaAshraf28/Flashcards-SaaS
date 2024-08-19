@@ -51,7 +51,14 @@ export default function Generate() {
             },
             body: JSON.stringify(body),
         })
-        .then((res) => res.json())
+        .then((res) => {
+            if (!res.ok) {
+                return res.text().then(text => {
+                    throw new Error(`Server error: ${text}`);
+                });
+            }
+            return res.json();
+        })
         .then((data) => {
             setFlashcards(activeTab === 'youtube' ? data.flashcards || [] : data);
             setLoading(false);
