@@ -1,0 +1,24 @@
+{
+    "build": {
+      "builder": "nixpacks",
+      "nixpacks": {
+        "phases": {
+          "setup": {
+            "commands": [
+              "pip install -r backend/requirements.txt"
+            ]
+          },
+          "start": {
+            "cmd": "gunicorn --chdir backend app:app"
+          }
+        }
+      }
+    },
+    "deployments": [
+      {
+        "name": "production",
+        "branch": "main"
+      }
+    ]
+  }
+  
