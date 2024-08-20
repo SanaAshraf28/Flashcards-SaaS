@@ -22,7 +22,7 @@ def generate_flashcards_endpoint():
         app.logger.info(f"Received request for URL: {youtube_url}")
         flashcards_json = generate_flashcards_from_youtube(youtube_url) # Generate flashcards in json format
         app.logger.info(f"Generated flashcards: {flashcards_json}")
-        return jsonify(flashcards_json)
+        return flashcards_json
 
     except Exception as e:
         error_message = f"Error occurred: {str(e)}"  # For debugging

@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-#load_dotenv(dotenv_path='../.env.local') # Load env variables
+load_dotenv(dotenv_path='../.env.local') # Load env variables
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 #os.environ['OPENAI_API_KEY'] = openai_api_key
