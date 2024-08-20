@@ -39,8 +39,8 @@ export default function Generate() {
 
         if (activeTab === 'youtube' && youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-            url = 'https://flashcards-saas.onrender.com/api/generate-flashcards';
-            // url = 'http://localhost:5000/api/generate-flashcards';
+            //url = 'https://flashcards-saas.onrender.com/api/generate-flashcards';
+            url = '/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
 
