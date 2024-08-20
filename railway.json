@@ -3,7 +3,7 @@
       "builder": "nixpacks",
       "nixpacks": {
         "phases": {
-          "setup": {
+          "install": {
             "commands": [
               "pip install -r backend/requirements.txt"
             ]
