@@ -40,7 +40,7 @@ export default function Generate() {
         if (activeTab === 'youtube' && youtubeLink) {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
             //url = 'https://flashcards-saas.onrender.com/api/generate-flashcards';
-            url = '/api/generate-flashcards';
+            url = 'https://notefy.up.railway.app/api/generate-flashcards';
             body = { youtube_url: youtubeLink };
         }
 
