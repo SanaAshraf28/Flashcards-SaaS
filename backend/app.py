@@ -8,7 +8,7 @@ from generate_flashcards import generate_flashcards_from_youtube
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": ["http://localhost:3001", "https://notefy.up.railway.app"]}}) # CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}})
+CORS(app, resources={r"/*": {"origins": "*"}}) # CORS(app, resources={r"/*": {"origins": "https://notefy.up.railway.app"}})
 
 @app.route('/api/generate-flashcards', methods=['POST'])
 def generate_flashcards_endpoint():
