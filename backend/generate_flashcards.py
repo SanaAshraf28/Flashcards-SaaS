@@ -3,6 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import logging
+import requests
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -12,6 +13,15 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 #os.environ['OPENAI_API_KEY'] = openai_api_key
 
 openai_client = OpenAI()
+
+proxies = {
+    "http": "http://104.207.44.253:3128",  # Replace with your desired proxy IP and port
+    "https": "http://104.207.44.253:3128",  # Replace with your desired proxy IP and port
+}
+
+session = requests.Session()
+session.proxies.update(proxies)
+YouTubeTranscriptApi._session = session
 
 def get_youtube_transcript(url): # Get transcript from the video
     try:    
