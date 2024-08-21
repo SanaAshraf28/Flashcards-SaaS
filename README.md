@@ -1,8 +1,8 @@
 # Notefy 📚✨
 
-> **Note:** The production build for Notefy on GitHub has encountered issues. However, you can still explore and use the live version of the app here: [Try Notefy](https://notefy.up.railway.app/).
-
 [![GitHub](https://img.shields.io/github/stars/SanaAshraf28/Notefy?style=social)](https://github.com/SanaAshraf28/Notefy)
+
+> **Note:** The production build for Notefy on GitHub has encountered issues. However, you can still explore and use the live version of the app here: [Try Notefy](https://notefy.up.railway.app/).
 
 Notefy is your ultimate AI-powered flashcard generator that transforms learning into an engaging and personalized experience. Whether you're studying from text, PDFs, or YouTube videos, Notefy helps you create and manage flashcards effortlessly.
 
