@@ -1,4 +1,6 @@
-# [Notefy](https://notefy.up.railway.app/) 📚✨
+# Notefy 📚✨
+
+> **Note:** The production build for Notefy on GitHub has encountered issues. However, you can still explore and use the live version of the app here: [Try Notefy](https://notefy.up.railway.app/).
 
 [![GitHub](https://img.shields.io/github/stars/SanaAshraf28/Notefy?style=social)](https://github.com/SanaAshraf28/Notefy)
 
